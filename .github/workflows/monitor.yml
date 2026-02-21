@@ -2,8 +2,9 @@ name: 금감원 징계공시 모니터링
 
 on:
   schedule:
-    - cron: '0 0 * * *'
-  workflow_dispatch:
+    - cron: '0 0 * * *'  # 매일 09:00 KST (UTC 00:00)
+    - cron: '0 7 * * *'  # 매일 16:00 KST (UTC 07:00)
+  workflow_dispatch:      # 수동 실행 가능
 
 permissions:
   contents: write
@@ -11,9 +12,13 @@ permissions:
 jobs:
   monitor:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -34,4 +39,4 @@ jobs:
           git config user.email "github-actions@github.com"
           git add -A
           git diff --staged --quiet || git commit -m "Update monitor state"
-          git push
+          git push origin HEAD:${{ github.ref_name }}
