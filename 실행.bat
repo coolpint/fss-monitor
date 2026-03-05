@@ -1,4 +1,4 @@
 @echo off
 cd /d "%~dp0"
-python monitor.py
+python monitor.py --daemon
 pause
