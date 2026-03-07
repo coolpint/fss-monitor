@@ -123,6 +123,30 @@ def parse_date(date_str: str) -> datetime:
     return datetime(int(y), int(m), int(d))
 
 
+def date_to_int(date_str: str) -> int:
+    """YYYY.MM.DD -> 20260227 형태 정수. 실패 시 0."""
+    if not date_str:
+        return 0
+    normalized = normalize_date(date_str)
+    match = re.fullmatch(r"(20\d{2})\.(\d{2})\.(\d{2})", normalized)
+    if not match:
+        return 0
+    y, m, d = match.groups()
+    return int(f"{y}{m}{d}")
+
+
+def max_notice_date(items: list[dict]) -> str:
+    """아이템 목록에서 가장 큰 공시일(YYYY.MM.DD)을 반환."""
+    dates = []
+    for item in items:
+        normalized = normalize_date(item.get("date", ""))
+        if date_to_int(normalized):
+            dates.append(normalized)
+    if not dates:
+        return ""
+    return max(dates, key=date_to_int)
+
+
 def make_absolute_url(raw: str) -> str:
     if not raw:
         return ""
@@ -228,36 +252,50 @@ def is_probably_pdf(content: bytes, content_type: str, filename: str) -> bool:
 # 상태 저장
 # ============================================================
 
-def load_seen() -> set[str]:
-    """이미 확인한 공시 key 목록을 불러온다."""
+def load_state() -> tuple[set[str], str]:
+    """상태 파일에서 seen key와 최신 공시일(high-water date)을 불러온다."""
     if not SEEN_FILE.exists():
-        return set()
+        return set(), ""
 
     try:
         data = json.loads(SEEN_FILE.read_text(encoding="utf-8"))
     except Exception:
         print("⚠ seen.json 읽기 실패: 기록을 비우고 계속 진행합니다.")
-        return set()
+        return set(), ""
 
     if isinstance(data, list):
         # 구버전 호환
-        return set(str(x) for x in data)
+        return set(str(x) for x in data), ""
 
     if isinstance(data, dict):
         seen = data.get("seen_keys", [])
+        latest_notice_date = normalize_date(str(data.get("latest_notice_date", "")))
         if isinstance(seen, list):
-            return set(str(x) for x in seen)
+            return set(str(x) for x in seen), latest_notice_date
 
-    return set()
+    return set(), ""
 
 
-def save_seen(seen: set[str]):
-    """확인한 공시 key 목록을 저장한다."""
+def save_state(seen: set[str], latest_notice_date: str):
+    """상태 파일 저장."""
     payload = {
         "seen_keys": sorted(seen),
+        "latest_notice_date": normalize_date(latest_notice_date),
         "saved_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     }
     SEEN_FILE.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def load_seen() -> set[str]:
+    """하위호환: seen key 목록만 반환."""
+    seen, _ = load_state()
+    return seen
+
+
+def save_seen(seen: set[str]):
+    """하위호환: latest_notice_date를 유지하며 seen만 저장."""
+    _, latest_notice_date = load_state()
+    save_state(seen, latest_notice_date)
 
 
 # ============================================================
@@ -834,14 +872,20 @@ def run_once() -> int:
         return 0
 
     first_run = not SEEN_FILE.exists()
-    seen = load_seen()
+    seen, latest_notice_date = load_state()
 
     if first_run:
         baseline = {i["key"] for i in items}
-        save_seen(baseline)
+        latest_notice_date = max_notice_date(items)
+        save_state(baseline, latest_notice_date)
         print("\n초기 실행: 현재 공시 목록을 기준선으로 저장했습니다.")
         print("다음 실행부터 신규 공시만 알림합니다.")
         return 0
+
+    # 구버전 상태파일(최신 공시일 없음) 보정
+    if not latest_notice_date:
+        seen_items = [i for i in items if i["key"] in seen]
+        latest_notice_date = max_notice_date(seen_items)
 
     new_items = [i for i in items if i["key"] not in seen]
 
@@ -855,6 +899,22 @@ def run_once() -> int:
     for item in new_items:
         print(f"[{item.get('date', '-')}] {item['title']}")
 
+        item_date = normalize_date(item.get("date", ""))
+        item_date_num = date_to_int(item_date)
+        latest_date_num = date_to_int(latest_notice_date)
+
+        # 과거 일자 공시가 뒤늦게 목록에 나타난 경우는 알림 스킵
+        if item_date_num and latest_date_num and item_date_num < latest_date_num:
+            print(
+                f"  · 과거 일자({item_date}) 공시로 판단되어 알림 건너뜀 "
+                f"(기준 최신일: {latest_notice_date})"
+            )
+            seen.add(item["key"])
+            save_state(seen, latest_notice_date)
+            processed += 1
+            print()
+            continue
+
         delivered = False
         if ALERT_LINK_ONLY:
             delivered = send_teams_link_alert(item)
@@ -865,7 +925,9 @@ def run_once() -> int:
 
         if delivered:
             seen.add(item["key"])
-            save_seen(seen)
+            if item_date_num and item_date_num > latest_date_num:
+                latest_notice_date = item_date
+            save_state(seen, latest_notice_date)
         else:
             print("  ⚠ 알림 전송 실패: seen에 기록하지 않고 다음 실행에 재시도합니다.")
 
