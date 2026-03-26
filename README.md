@@ -75,6 +75,12 @@ python monitor.py
 - GitHub Actions는 **원격 저장소(`origin/main`)의 코드**를 실행하므로, 로컬 수정 후 반드시 `git push`까지 해야 반영됩니다.
 - GitHub 리포지토리 `Settings > Secrets and variables > Actions`에 `TEAMS_WEBHOOK_URL`을 등록하세요.
 
+### 방법 D: 주간 상태 점검
+
+- `.github/workflows/weekly-health-check.yml` 기준으로 매주 금요일 `15:45`(KST)에 실행됩니다.
+- 최근 7일간 `monitor.yml` scheduled 실행 이력을 점검하고, 이상이 없어도 Teams로 `정상 작동 중` 메시지를 보냅니다.
+- 실패, 실행 누락, 미완료 run이 있으면 Teams에 `점검 필요` 상태로 요약을 보냅니다.
+
 ## 주의
 
 - `--reset` 실행 시 기존 기록(`seen.json`)이 초기화되어 이미 있던 공시도 다시 신규로 처리됩니다.
