@@ -24,6 +24,16 @@ GITHUB_API_BASE = "https://api.github.com"
 DEFAULT_LOOKBACK_DAYS = 7
 DEFAULT_MONITOR_WORKFLOW = "monitor.yml"
 DEFAULT_MONITOR_UTC_SLOTS = "00:00,07:00"
+DEFAULT_WINDOW_ANCHOR_UTC = "FRI@06:45"
+WEEKDAY_NAMES = {
+    "MON": 0,
+    "TUE": 1,
+    "WED": 2,
+    "THU": 3,
+    "FRI": 4,
+    "SAT": 5,
+    "SUN": 6,
+}
 
 
 def request_with_retry(method: str, url: str, **kwargs) -> requests.Response:
@@ -58,6 +68,47 @@ def parse_slots_utc(raw: str) -> list[tuple[int, int]]:
         hour_str, minute_str = part.split(":")
         slots.append((int(hour_str), int(minute_str)))
     return sorted(set(slots))
+
+
+def parse_window_anchor_utc(raw: str) -> tuple[int, int, int] | None:
+    raw = raw.strip()
+    if not raw:
+        return None
+
+    weekday_raw, time_raw = raw.split("@", 1)
+    weekday_key = weekday_raw.strip().upper()
+    if weekday_key.isdigit():
+        weekday = int(weekday_key)
+    else:
+        weekday = WEEKDAY_NAMES[weekday_key]
+
+    if weekday < 0 or weekday > 6:
+        raise ValueError(f"잘못된 weekday 값입니다: {weekday}")
+
+    hour_str, minute_str = time_raw.split(":")
+    return weekday, int(hour_str), int(minute_str)
+
+
+def resolve_window_end(now_utc: datetime, anchor_raw: str) -> datetime:
+    anchor = parse_window_anchor_utc(anchor_raw)
+    if anchor is None:
+        return now_utc
+
+    weekday, hour, minute = anchor
+    days_back = (now_utc.weekday() - weekday) % 7
+    anchor_date = now_utc.date() - timedelta(days=days_back)
+    window_end = datetime(
+        anchor_date.year,
+        anchor_date.month,
+        anchor_date.day,
+        hour,
+        minute,
+        tzinfo=UTC,
+    )
+    if window_end > now_utc:
+        window_end -= timedelta(days=7)
+
+    return window_end
 
 
 def count_expected_runs(window_start: datetime, window_end: datetime, slots_utc: list[tuple[int, int]]) -> int:
@@ -106,9 +157,10 @@ def fetch_workflow_runs(
 ) -> list[dict]:
     headers = {
         "Accept": "application/vnd.github+json",
-        "Authorization": f"Bearer {github_token}",
         "X-GitHub-Api-Version": "2022-11-28",
     }
+    if github_token:
+        headers["Authorization"] = f"Bearer {github_token}"
 
     all_runs: list[dict] = []
     page = 1
@@ -141,12 +193,14 @@ def build_summary(
     branch: str,
     lookback_days: int,
     slots_utc_raw: str,
+    window_anchor_utc_raw: str,
     github_token: str,
 ) -> WeeklyHealthSummary:
     now_utc = datetime.now(UTC)
-    window_start = now_utc - timedelta(days=lookback_days)
+    window_end = resolve_window_end(now_utc, window_anchor_utc_raw)
+    window_start = window_end - timedelta(days=lookback_days)
     slots_utc = parse_slots_utc(slots_utc_raw)
-    expected_runs = count_expected_runs(window_start, now_utc, slots_utc)
+    expected_runs = count_expected_runs(window_start, window_end, slots_utc)
 
     workflow_runs = fetch_workflow_runs(repository, workflow_file, branch, github_token)
     scheduled_runs = []
@@ -155,7 +209,7 @@ def build_summary(
         if run.get("event") != "schedule":
             continue
         created_at = parse_iso_datetime(run["created_at"])
-        if created_at < window_start:
+        if created_at < window_start or created_at > window_end:
             continue
         scheduled_runs.append(run)
 
@@ -206,7 +260,7 @@ def build_summary(
         healthy=healthy,
         repository=repository,
         window_start=window_start,
-        window_end=now_utc,
+        window_end=window_end,
         expected_runs=expected_runs,
         actual_runs=len(scheduled_runs),
         successful_runs=len(successful_runs),
@@ -283,6 +337,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--workflow-file", default=DEFAULT_MONITOR_WORKFLOW)
     parser.add_argument("--lookback-days", type=int, default=DEFAULT_LOOKBACK_DAYS)
     parser.add_argument("--schedule-slots-utc", default=DEFAULT_MONITOR_UTC_SLOTS)
+    parser.add_argument(
+        "--window-anchor-utc",
+        default=DEFAULT_WINDOW_ANCHOR_UTC,
+        help="주간 점검 기준 시각(예: FRI@06:45). 비우면 현재 시각 기준",
+    )
     parser.add_argument("--print-only", action="store_true", help="Teams 전송 없이 결과만 출력")
     return parser.parse_args()
 
@@ -294,8 +353,6 @@ def main() -> None:
 
     if not args.repository:
         raise RuntimeError("GITHUB_REPOSITORY 또는 --repository가 필요합니다.")
-    if not github_token:
-        raise RuntimeError("GITHUB_TOKEN이 필요합니다.")
 
     summary = build_summary(
         repository=args.repository,
@@ -303,6 +360,7 @@ def main() -> None:
         branch=args.branch,
         lookback_days=args.lookback_days,
         slots_utc_raw=args.schedule_slots_utc,
+        window_anchor_utc_raw=args.window_anchor_utc,
         github_token=github_token,
     )
 

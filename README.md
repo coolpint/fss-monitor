@@ -79,6 +79,7 @@ python monitor.py
 
 - `.github/workflows/weekly-health-check.yml` 기준으로 매주 금요일 `15:45`(KST)에 실행됩니다.
 - 최근 7일간 `monitor.yml` scheduled 실행 이력을 점검하고, 이상이 없어도 Teams로 `정상 작동 중` 메시지를 보냅니다.
+- 점검 기간은 실제 워크플로 시작 시각이 아니라 주간 점검의 예정 시각(`금요일 15:45 KST`)에 고정해 계산하므로, GitHub Actions 지연 때문에 같은 날 `16:00 KST` 실행이 아직 안 잡힌 경우를 누락으로 오판하지 않습니다.
 - 실패, 실행 누락, 미완료 run이 있으면 Teams에 `점검 필요` 상태로 요약을 보냅니다.
 
 ## 주의
