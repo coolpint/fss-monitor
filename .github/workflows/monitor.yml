@@ -2,8 +2,7 @@ name: 금감원 징계공시 모니터링
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # 매일 09:00 KST (UTC 00:00)
-    - cron: '0 7 * * *'  # 매일 16:00 KST (UTC 07:00)
+    - cron: '0 17 * * *'  # 매일 02:00 KST (UTC 17:00, 전날)
   workflow_dispatch:      # 수동 실행 가능
 
 permissions:

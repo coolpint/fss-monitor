@@ -7,7 +7,7 @@
 ## 핵심 변경사항
 
 - 신규 공시 파싱 로직 강화 (누락 방지)
-- 기본 확인 시간: 매일 `09:00`, `16:00`
+- 기본 확인 시간: 매일 `02:00`
 - 실행 모드
   - 1회 실행: `python monitor.py`
   - 스케줄 상시 실행: `python monitor.py --daemon`
@@ -25,7 +25,7 @@ pip install -r requirements.txt
 ```bash
 python monitor.py
 python monitor.py --daemon
-python monitor.py --check-times 09:00,16:00 --daemon
+python monitor.py --check-times 02:00 --daemon
 python monitor.py --test
 python monitor.py --reset
 ```
@@ -60,9 +60,8 @@ python monitor.py --daemon
 
 ### 방법 B: 작업 스케줄러(권장)
 
-작업 스케줄러에 같은 명령을 2개 트리거로 등록:
-- 매일 09:00
-- 매일 16:00
+작업 스케줄러에 같은 명령을 1개 트리거로 등록:
+- 매일 02:00
 
 실행 명령:
 ```bash
@@ -71,7 +70,7 @@ python monitor.py
 
 ### 방법 C: GitHub Actions로 실행
 
-- `.github/workflows/monitor.yml` 기준으로 매일 `09:00`, `16:00`(KST)에 실행됩니다.
+- `.github/workflows/monitor.yml` 기준으로 매일 `02:00`(KST)에 실행됩니다.
 - GitHub Actions는 **원격 저장소(`origin/main`)의 코드**를 실행하므로, 로컬 수정 후 반드시 `git push`까지 해야 반영됩니다.
 - GitHub 리포지토리 `Settings > Secrets and variables > Actions`에 `TEAMS_WEBHOOK_URL`을 등록하세요.
 
@@ -79,7 +78,7 @@ python monitor.py
 
 - `.github/workflows/weekly-health-check.yml` 기준으로 매주 금요일 `15:45`(KST)에 실행됩니다.
 - 최근 7일간 `monitor.yml` scheduled 실행 이력을 점검하고, 이상이 없어도 Teams로 `정상 작동 중` 메시지를 보냅니다.
-- 점검 기간은 실제 워크플로 시작 시각이 아니라 주간 점검의 예정 시각(`금요일 15:45 KST`)에 고정해 계산하므로, GitHub Actions 지연 때문에 같은 날 `16:00 KST` 실행이 아직 안 잡힌 경우를 누락으로 오판하지 않습니다.
+- 점검 기간은 실제 워크플로 시작 시각이 아니라 주간 점검의 예정 시각(`금요일 15:45 KST`)에 고정해 계산하므로, GitHub Actions 지연 때문에 경계 시각이 흔들려도 예상 실행 횟수를 안정적으로 계산합니다.
 - 실패, 실행 누락, 미완료 run이 있으면 Teams에 `점검 필요` 상태로 요약을 보냅니다.
 
 ## 주의

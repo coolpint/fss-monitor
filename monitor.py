@@ -10,8 +10,8 @@
 
 사용법:
   python monitor.py                  ← 1회 실행
-  python monitor.py --daemon         ← 매일 09:00, 16:00 자동 확인
-  python monitor.py --check-times 09:00,16:00 --daemon
+  python monitor.py --daemon         ← 매일 02:00 자동 확인
+  python monitor.py --check-times 02:00 --daemon
   python monitor.py --test
   python monitor.py --reset
 
@@ -59,7 +59,7 @@ TEAMS_CHANNEL_ID = os.getenv("TEAMS_CHANNEL_ID", "")
 PDF_FOLDER = Path(__file__).parent / "pdfs"
 
 # 기본 확인 시간(로컬 시간)
-DEFAULT_CHECK_TIMES = os.getenv("CHECK_TIMES", "09:00,16:00")
+DEFAULT_CHECK_TIMES = os.getenv("CHECK_TIMES", "02:00")
 
 # 1(기본): 링크만 알림, 0: PDF 다운로드/전송까지 수행
 ALERT_LINK_ONLY = os.getenv("ALERT_LINK_ONLY", "1").strip().lower() not in ("0", "false", "no")
@@ -950,7 +950,7 @@ def parse_check_times(raw: str) -> list[str]:
 
     unique = sorted(set(values))
     if not unique:
-        raise ValueError("확인 시간 형식이 잘못되었습니다. 예: 09:00,16:00")
+        raise ValueError("확인 시간 형식이 잘못되었습니다. 예: 02:00")
     return unique
 
 
@@ -974,7 +974,7 @@ def next_run_at(now: datetime, check_times: list[str]) -> datetime:
 
 
 def run_daemon(check_times: list[str]):
-    """09:00/16:00 등 지정 시간마다 자동 실행."""
+    """02:00 등 지정 시간마다 자동 실행."""
     print("=" * 58)
     print(f"스케줄 모드 시작: {', '.join(check_times)}")
     print("중지하려면 Ctrl+C")
@@ -1062,7 +1062,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--check-times",
         default=DEFAULT_CHECK_TIMES,
-        help="확인 시각(HH:MM,HH:MM). 기본값: 09:00,16:00",
+        help="확인 시각(HH:MM,HH:MM). 기본값: 02:00",
     )
     return parser.parse_args()
 
