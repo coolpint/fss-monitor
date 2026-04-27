@@ -26,6 +26,8 @@ import html
 import json
 import os
 import re
+import shutil
+import subprocess
 import sys
 import time
 from datetime import datetime, timedelta
@@ -39,13 +41,8 @@ from bs4 import BeautifulSoup
 # 설정
 # ============================================================
 
-# 기존 하드코드 URL 유지 + 환경변수 우선
-DEFAULT_WEBHOOK_URL = (
-    "https://hoamlaw2022.webhook.office.com/webhookb2/75c09bd8-ec98-4dcd-bed5-"
-    "488a59a95b8f@eacf98ab-6217-42c4-9f62-193901c7f469/IncomingWebhook/"
-    "883f7dfbc0bd43988fb465da5efd0121/e1240353-937d-4363-860a-62a3f22bafec/"
-    "V2UmEzLk9XKv5m55vTK8_eaH8DMtnCn30oYx8ukZniqwY1"
-)
+# Teams Webhook은 환경변수/Actions secret으로만 주입한다.
+DEFAULT_WEBHOOK_URL = ""
 TEAMS_WEBHOOK_URL = os.getenv("TEAMS_WEBHOOK_URL", DEFAULT_WEBHOOK_URL)
 
 # Graph API 설정(파일 업로드용)
@@ -296,6 +293,14 @@ def save_seen(seen: set[str]):
     """하위호환: latest_notice_date를 유지하며 seen만 저장."""
     _, latest_notice_date = load_state()
     save_state(seen, latest_notice_date)
+
+
+def move_to_trash(path: Path) -> None:
+    """저장소 규칙에 따라 파일 삭제 대신 trash로 이동한다."""
+    trash_bin = shutil.which("trash")
+    if not trash_bin:
+        raise RuntimeError("trash 명령을 찾지 못했습니다. seen.json을 직접 확인해 주세요.")
+    subprocess.run([trash_bin, str(path)], check=True)
 
 
 # ============================================================
@@ -1072,8 +1077,8 @@ def main():
 
     if args.reset:
         if SEEN_FILE.exists():
-            SEEN_FILE.unlink()
-        print("기록 초기화 완료. 다음 실행 시 기존 글도 신규로 처리됩니다.")
+            move_to_trash(SEEN_FILE)
+        print("기록을 휴지통으로 이동했습니다. 다음 실행 시 기존 글도 신규로 처리됩니다.")
         return
 
     try:

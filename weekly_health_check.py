@@ -14,11 +14,12 @@ import argparse
 import json
 import os
 from dataclasses import dataclass
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone
 
 import requests
 
 
+UTC = timezone.utc
 KST = timezone(timedelta(hours=9))
 GITHUB_API_BASE = "https://api.github.com"
 DEFAULT_LOOKBACK_DAYS = 7

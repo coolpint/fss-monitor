@@ -10,7 +10,7 @@
 
 ## 2. 현재 프로젝트 상태
 
-- 저장소 위치: `/Users/air/codes/fss-monitor`
+- 저장소 위치: `/Users/sanghoon/codes/fss-monitor`
 - 현재 핵심 파일:
   - `monitor.py`: 금감원 징계공시 목록 확인, 신규 공시 감지, Teams 알림, 선택적 PDF 다운로드/Teams Graph 업로드
   - `weekly_health_check.py`: GitHub Actions 기반 모니터 실행 상태 점검
@@ -154,6 +154,7 @@
 - 결정: 사용자가 다른 기기에서 이어가야 한다고 명시하면, 비밀이 없는 현재 작업 산출물은 `handoff/` 아래 추적 파일로 승격해 GitHub에 저장한다.
 - 결정: 기기 이동 인계를 위해 Gem URL 같은 비비밀 설정값은 추적 문서에 기록할 수 있지만, 계정 힌트, 로그인 세션, 쿠키, 비밀번호는 계속 로컬에만 둔다.
 - 결정: 이전 머신을 실행 경로에서 제외할 때는 해당 머신에 남아 있는 `cron`, `launchd`, 수동 daemon 경로를 제거하거나 중단한다.
+- 결정: 새 로컬 Mac의 기준 저장소 위치를 `/Users/sanghoon/codes/fss-monitor`로 삼고, 이전 기기 경로(`/Users/air/...`)는 과거 기록 또는 인계 맥락으로만 취급한다.
 
 ## 8. 작업 기록
 
@@ -197,6 +198,20 @@
 - `runs/` 정책은 유지하고, 비밀이 없는 기사 초안, 만평 이미지, PDF 텍스트, 원문 PDF, 현재 상태 요약만 추적 인계 패키지로 복사한다.
 - 새 기기용 재설정 절차와 로컬 전용 정보의 경계를 README 및 인계 문서에 기록한다.
 - 이 머신에서 더 이상 작업을 실행하지 않겠다는 사용자 지시에 따라, 로컬 실행 흔적을 점검했다. `launchctl`에는 관련 작업이 없었고, `crontab`에는 `monitor.py` 항목이 남아 있어 제거 대상으로 확인했다.
+- GitHub 저장소 `https://github.com/coolpint/fss-monitor`를 새 로컬 Mac의 `/Users/sanghoon/codes/fss-monitor`에 clone 했다.
+- README와 인계 문서의 로컬 파일 링크를 새 기준 경로(`/Users/sanghoon/codes/fss-monitor`)로 정정했다.
+- 비밀이 아닌 Gem/CMS URL과 기본 운영값을 바탕으로 새 로컬 전용 `service_config.local.json`을 생성한다. 로그인 세션, 쿠키, 계정 힌트, 비밀번호는 저장하지 않는다.
+- 새 로컬 전용 Python 가상환경 `.venv/`를 만들 예정이므로 `.gitignore`에 `.venv/`를 추가한다.
+- macOS 기본 Python 3.9의 LibreSSL 환경에서 `urllib3 v2` 경고가 발생하므로, 이 로컬 이관 기준에서는 `urllib3<2`를 명시해 실행 로그와 HTTPS 호환성을 안정화한다.
+- 코드 재점검 결과, Teams Webhook은 코드 기본값이 아니라 환경변수/Actions secret으로만 주입하도록 정리한다.
+- `monitor.py --reset`은 파일 삭제 대신 `trash` 명령으로 `seen.json`을 휴지통으로 이동하도록 바꾼다.
+- GitHub Actions 상태 저장은 `git add -A` 대신 `seen.json`만 staging해 의도치 않은 파일 커밋을 막는다.
+- 로컬 작업 산출물에 계정 힌트 값이 직접 기록되지 않도록, handoff/CMS 템플릿/metadata에는 설정 여부 또는 로컬 보관 안내만 남긴다.
+- 로컬 Mac의 Python 3.9에서도 주간 점검 스크립트가 import되도록 `datetime.UTC` 대신 `timezone.utc` 호환 방식을 사용한다.
+- 검증: `monitor.py --test`는 실제 금감원 사이트에서 공시 후보 10건을 파싱했고, `TEAMS_WEBHOOK_URL`이 없을 때 Teams 전송을 안전하게 건너뛰는 것을 확인했다.
+- 검증: `article_pipeline.py --latest --force --no-state --max-items 1`로 최신 하나은행 공시의 PDF 다운로드, 텍스트 추출, Gemini/CMS 인계 파일 생성이 `gemini_ready` 상태까지 완료되는 것을 확인했다.
+- 검증: `weekly_health_check.py --repository coolpint/fss-monitor --print-only --lookback-days 1`로 GitHub Actions 주간 점검 API 조회가 정상 동작하는 것을 확인했다.
+- 검증: `monitor.py` 1회 실행은 현재 `seen.json` 기준으로 공시 후보 10건 확인 후 `새로운 공시 없음` 상태로 정상 종료됐다.
 
 ## 9. 변경 기록
 
@@ -222,3 +237,10 @@
 
 - 기기 이동을 위한 추적 인계 패키지 방식을 도입했다. 기본 로컬 산출물 정책은 유지하되, 명시적 요청 시 `handoff/` 아래에 비밀 없는 산출물을 Git-tracked 형태로 보존한다.
 - 이 머신은 더 이상 이 프로젝트의 실행 경로로 사용하지 않기로 했고, 남아 있던 로컬 스케줄 흔적을 정리하는 절차를 문서와 운영 기록에 반영했다.
+- 저장소를 새 로컬 Mac으로 가져오고 문서의 기준 경로를 `/Users/sanghoon/codes/fss-monitor`로 갱신했다.
+- 새 로컬 Mac의 Python 실행 환경 준비를 위해 `.venv/`를 로컬 전용 제외 대상으로 추가했다.
+- macOS 기본 Python 3.9에서 발생한 `urllib3 v2` LibreSSL 경고를 피하기 위해 `requirements.txt`에 `urllib3<2`를 추가했다.
+- 코드 재점검으로 비밀 정보 주입, reset 파일 처리, Actions 상태 커밋 범위, 로컬 계정 힌트 기록 방식을 constitution 기준에 맞게 정리했다.
+- `weekly_health_check.py`가 Python 3.9 로컬 환경에서도 실행될 수 있도록 UTC 상수를 호환 방식으로 수정했다.
+- 실제 네트워크 검증으로 금감원 목록 파싱, 기사화 작업 패키지 생성, GitHub Actions 점검 조회가 새 로컬 Mac에서 동작함을 확인했다.
+- 1회 모니터 실행까지 확인해 GitHub Actions 감시 흐름과 로컬 기사화 흐름이 모두 이어질 수 있는 상태로 정리했다.

@@ -28,7 +28,7 @@
 ## 새 기기에서 해야 할 일
 
 1. 이 저장소를 clone 한다.
-2. [service_config.example.json](/Users/air/codes/fss-monitor/service_config.example.json)을 복사해 `service_config.local.json`을 만든다.
+2. [service_config.example.json](/Users/sanghoon/codes/fss-monitor/service_config.example.json)을 복사해 `service_config.local.json`을 만든다.
 3. `service_config.local.json`에 아래 값을 채운다.
    - `gemini_model_mode`: `Pro`
    - `article_gem_url`: `https://gemini.google.com/gem/ac8fb39d6b37`

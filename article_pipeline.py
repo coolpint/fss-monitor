@@ -275,6 +275,7 @@ def write_handoff(
     cms_write = config.cms_write_url or "[설정 필요: MONEYNLAW_WRITE_URL 또는 service_config.local.json cms_write_url]"
     pdf_list = "\n".join(f"- `{path}`" for path in pdf_paths) or "- PDF 다운로드 실패 또는 없음"
     errors = "\n".join(f"- {error}" for error in extraction_errors) or "- 없음"
+    account_hint = "[로컬 설정에만 보관]"
 
     handoff = f"""# 작업 인계서
 
@@ -305,7 +306,7 @@ def write_handoff(
 7. `article.md` 내용을 붙여넣고 만평을 생성한 뒤 `cartoon/` 폴더에 다운로드합니다.
 8. Chrome 프로필 `{config.chrome_profile_name}`을 사용합니다.
    - 프로필 디렉터리: {config.chrome_profile_directory or "[로컬 Chrome 설정에서 확인]"}
-   - 계정 확인 힌트: {config.chrome_account_hint}
+   - 계정 확인 힌트: {account_hint}
 9. moneynlaw.co.kr 회원 로그인 화면을 엽니다.
    - URL: {cms_login}
 10. 저장된 로그인 정보로 로그인한 뒤 기사 작성 화면을 엽니다.
@@ -338,13 +339,14 @@ def write_cartoon_template(job_dir: Path, config: ServiceConfig) -> None:
 
 
 def write_cms_template(job_dir: Path, item: dict[str, str], config: ServiceConfig) -> None:
+    account_hint = "[로컬 설정에만 보관]"
     body = f"""# moneynlaw CMS 입력 템플릿
 
 ## 브라우저와 로그인
 
 - Chrome 프로필: {config.chrome_profile_name}
 - Chrome 프로필 디렉터리: {config.chrome_profile_directory or "[로컬 Chrome 설정에서 확인]"}
-- 계정 확인 힌트: {config.chrome_account_hint}
+- 계정 확인 힌트: {account_hint}
 - 로그인 URL: {config.cms_login_url or config.cms_admin_url}
 - 기사 작성 URL: {config.cms_write_url}
 
@@ -385,7 +387,7 @@ def process_item(item: dict[str, str], config: ServiceConfig) -> dict[str, Any]:
         "config": {
             "chrome_profile_name": config.chrome_profile_name,
             "chrome_profile_directory": config.chrome_profile_directory,
-            "chrome_account_hint": config.chrome_account_hint,
+            "chrome_account_hint_configured": bool(config.chrome_account_hint),
             "cms_login_url": config.cms_login_url,
             "cms_write_url": config.cms_write_url,
             "cms_review_status": config.cms_review_status,
