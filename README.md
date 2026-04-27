@@ -30,6 +30,54 @@ python monitor.py --test
 python monitor.py --reset
 ```
 
+## 로컬 기사화 파이프라인
+
+Teams 링크 알림 이후의 후속 작업(PDF 다운로드, PDF 텍스트 추출, Gemini Gems 입력 준비, CMS 초안 입력 준비)은 로컬 Mac에서 `article_pipeline.py`로 실행합니다.
+
+```bash
+python article_pipeline.py --latest
+python article_pipeline.py --process-new --max-items 3
+python article_pipeline.py --item-url "https://www.fss.or.kr/..."
+python article_pipeline.py --daemon
+```
+
+생성물은 기본적으로 `runs/` 아래 작업 폴더에 저장됩니다.
+
+- `metadata.json`: 공시 메타데이터
+- `pdf/`: 다운로드한 금감원 PDF
+- `pdf_text.txt`: PDF 추출 텍스트
+- `gemini_article_input.md`: "금감원 징계 해설" Gem에 붙여넣을 입력
+- `gemini_cartoon_input_template.md`: "신문만평 제작" Gem에 붙여넣을 입력 템플릿
+- `cms_draft_template.md`: moneynlaw.co.kr 기사 입력용 템플릿
+- `handoff.md`: 다음 작업 순서
+- `status.json`: 작업 상태와 확인 필요 항목
+
+로컬 설정이 필요하면 `service_config.example.json`을 참고해 `service_config.local.json`을 만들거나 환경변수를 사용하세요.
+
+- `FSS_ARTICLE_GEM_URL`: Gemini "금감원 징계 해설" Gem URL
+- `FSS_CARTOON_GEM_URL`: Gemini "신문만평 제작" Gem URL
+- `FSS_GEMINI_MODEL_MODE`: Gemini Gems에서 사용할 모델 모드. 기본값은 `Pro`
+- `FSS_CHROME_PROFILE_NAME`: CMS/Gemini 작업에 사용할 Chrome 프로필. 기본값은 `가리봉동`
+- `FSS_CHROME_PROFILE_DIRECTORY`: 로컬 Chrome 프로필 디렉터리. 예: `Profile 4`
+- `FSS_CHROME_ACCOUNT_HINT`: 로그인 계정 확인용 힌트. 실제 값은 로컬 설정에만 둡니다.
+- `MONEYNLAW_LOGIN_URL`: moneynlaw.co.kr 회원 로그인 URL
+- `MONEYNLAW_WRITE_URL`: moneynlaw.co.kr 기사 작성 URL
+- `MONEYNLAW_REVIEW_STATUS`: 기사 작성 화면의 `기사검토` 값. 기본값은 `승인요청`
+
+주의:
+
+- 로그인 정보, 쿠키, API 키, 웹훅은 저장소에 저장하지 마세요.
+- Gemini Gems 실행 시 "빠른 모델" 대신 `Pro`를 선택하세요.
+- 현재 파이프라인은 안전을 위해 공개 발행하지 않고, 기사화 작업 패키지와 `기사검토=승인요청` 저장 인계 파일을 먼저 만듭니다.
+- moneynlaw.co.kr에서 `기사검토`가 `승인요청`이면 입력과 이미지 첨부 후 `저장하기`까지 추가 확인 없이 진행할 수 있습니다. 최종 공개 발행은 승인 단계에서 별도 처리합니다.
+
+## 기기 이동 인계
+
+- `runs/`, `pipeline_state.json`, `service_config.local.json`은 기본적으로 로컬 전용입니다.
+- 다른 기기에서 이어가야 할 때는, 비밀이 없는 산출물만 `handoff/` 아래 추적 파일로 승격해 GitHub에 저장합니다.
+- 현재 저장소에는 샘플 인계 패키지로 [handoff/20260420_202500146_1_주식회사-하나은행-제재관련-공시/README.md](/Users/air/codes/fss-monitor/handoff/20260420_202500146_1_주식회사-하나은행-제재관련-공시/README.md)가 포함됩니다.
+- 새 기기에서는 `service_config.example.json`을 복사해 `service_config.local.json`을 다시 만들고, 브라우저 로그인 세션과 로컬 Chrome 프로필 디렉터리만 재설정하면 됩니다.
+
 ## Teams 설정
 
 ### 1) Webhook만 사용하는 경우 (기존 방식)

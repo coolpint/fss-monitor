@@ -1,0 +1,14 @@
+{
+  "runs_dir": "runs",
+  "state_file": "pipeline_state.json",
+  "max_gemini_input_chars": 120000,
+  "gemini_model_mode": "Pro",
+  "chrome_profile_name": "가리봉동",
+  "chrome_profile_directory": "",
+  "chrome_account_hint": "",
+  "article_gem_url": "",
+  "cartoon_gem_url": "",
+  "cms_login_url": "https://www.moneynlaw.co.kr/member/login.html",
+  "cms_write_url": "https://www.moneynlaw.co.kr/news/userArticleWriteForm.html",
+  "cms_review_status": "승인요청"
+}

@@ -1,3 +1,8 @@
 .DS_Store
 __pycache__/
 *.pyc
+pdfs/
+runs/
+pipeline_state.json
+service_config.local.json
+output/
