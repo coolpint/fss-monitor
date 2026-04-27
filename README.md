@@ -77,6 +77,7 @@ python article_pipeline.py --daemon
 - 다른 기기에서 이어가야 할 때는, 비밀이 없는 산출물만 `handoff/` 아래 추적 파일로 승격해 GitHub에 저장합니다.
 - 현재 저장소에는 샘플 인계 패키지로 [handoff/20260420_202500146_1_주식회사-하나은행-제재관련-공시/README.md](/Users/air/codes/fss-monitor/handoff/20260420_202500146_1_주식회사-하나은행-제재관련-공시/README.md)가 포함됩니다.
 - 새 기기에서는 `service_config.example.json`을 복사해 `service_config.local.json`을 다시 만들고, 브라우저 로그인 세션과 로컬 Chrome 프로필 디렉터리만 재설정하면 됩니다.
+- 이전 머신을 더 이상 실행 경로에 쓰지 않을 때는, 그 머신에 남아 있는 `cron`, `launchd`, 수동 daemon 실행 경로를 함께 정리해야 합니다.
 
 ## Teams 설정
 
