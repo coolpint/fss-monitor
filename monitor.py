@@ -904,22 +904,6 @@ def run_once() -> int:
     for item in new_items:
         print(f"[{item.get('date', '-')}] {item['title']}")
 
-        item_date = normalize_date(item.get("date", ""))
-        item_date_num = date_to_int(item_date)
-        latest_date_num = date_to_int(latest_notice_date)
-
-        # 과거 일자 공시가 뒤늦게 목록에 나타난 경우는 알림 스킵
-        if item_date_num and latest_date_num and item_date_num < latest_date_num:
-            print(
-                f"  · 과거 일자({item_date}) 공시로 판단되어 알림 건너뜀 "
-                f"(기준 최신일: {latest_notice_date})"
-            )
-            seen.add(item["key"])
-            save_state(seen, latest_notice_date)
-            processed += 1
-            print()
-            continue
-
         delivered = False
         if ALERT_LINK_ONLY:
             delivered = send_teams_link_alert(item)
@@ -929,6 +913,9 @@ def run_once() -> int:
             delivered = send_teams_notification(item, pdfs)
 
         if delivered:
+            item_date = normalize_date(item.get("date", ""))
+            item_date_num = date_to_int(item_date)
+            latest_date_num = date_to_int(latest_notice_date)
             seen.add(item["key"])
             if item_date_num and item_date_num > latest_date_num:
                 latest_notice_date = item_date
