@@ -2,7 +2,7 @@ name: 금감원 징계공시 모니터링
 
 on:
   schedule:
-    - cron: '0 17 * * *'  # 매일 02:00 KST (UTC 17:00, 전날)
+    - cron: '0 * * * *'   # 매시간 실행해 금감원 대량/수시 게시 지연을 줄임
   workflow_dispatch:      # 수동 실행 가능
 
 permissions:
@@ -30,6 +30,7 @@ jobs:
       - name: Run monitor
         env:
           TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
+          FSS_MAX_LIST_PAGES: "30"
         run: python monitor.py
 
       - name: Save state

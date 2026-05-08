@@ -32,7 +32,7 @@ import sys
 import time
 from datetime import datetime, timedelta
 from pathlib import Path
-from urllib.parse import quote, unquote, urljoin
+from urllib.parse import parse_qsl, quote, unquote, urlencode, urljoin, urlparse, urlunparse
 
 import requests
 from bs4 import BeautifulSoup
@@ -75,6 +75,7 @@ HEADERS = {
 
 REQUEST_RETRY = 3
 REQUEST_BACKOFF_SEC = 2
+DEFAULT_MAX_LIST_PAGES = int(os.getenv("FSS_MAX_LIST_PAGES", "30"))
 
 
 # ============================================================
@@ -331,17 +332,17 @@ def build_detail_url(href: str, onclick: str, item_id: str) -> str:
     return abs_href
 
 
-def fetch_list() -> list[dict]:
-    """
-    금감원 징계공시 목록 페이지에서 공시 항목을 가져온다.
-    반환: [{"id": "12345", "key": "id:12345", "title": "...", "date": "...", "url": "..."}, ...]
-    """
-    print("금감원 사이트 접속 중...")
+def list_page_url(page_index: int) -> str:
+    """목록 페이지 번호를 반영한 URL을 만든다."""
+    parsed = urlparse(FSS_LIST_URL)
+    query = dict(parse_qsl(parsed.query, keep_blank_values=True))
+    query["pageIndex"] = str(page_index)
+    return urlunparse(parsed._replace(query=urlencode(query)))
 
-    resp = request_with_retry("GET", FSS_LIST_URL, headers=HEADERS, timeout=30)
-    resp.raise_for_status()
 
-    soup = BeautifulSoup(resp.text, "html.parser")
+def parse_list_page(html_text: str) -> list[dict]:
+    """금감원 징계공시 목록 HTML 한 페이지에서 공시 항목을 파싱한다."""
+    soup = BeautifulSoup(html_text, "html.parser")
     items: dict[str, dict] = {}
 
     # 1) 표 기반 파싱(현재 금감원 구조)
@@ -355,11 +356,11 @@ def fetch_list() -> list[dict]:
         date_str = normalize_date(raw_date)
         a = tr.find("a", href=True)
 
-        if not org_name or not a:
+        if not org_name or not a or not date_to_int(date_str):
             continue
 
         detail_url = make_absolute_url(a.get("href", ""))
-        if not detail_url:
+        if not detail_url or "openInfo/view.do" not in detail_url:
             continue
 
         exam_mgmt_no = re.search(r"examMgmtNo=([^&]+)", detail_url)
@@ -381,6 +382,7 @@ def fetch_list() -> list[dict]:
 
     # 2) 예외 구조 대비 fallback 파싱
     if not items:
+        soup = BeautifulSoup(html_text, "html.parser")
         for a in soup.find_all("a"):
             href = a.get("href", "")
             onclick = a.get("onclick", "")
@@ -400,6 +402,10 @@ def fetch_list() -> list[dict]:
 
             parent = a.find_parent(["tr", "li", "div"])
             date_str = extract_first_date(parent.get_text(" ", strip=True) if parent else "")
+            if not item_id and not date_to_int(date_str):
+                continue
+            if "openInfo/view.do" not in detail_url and "openInfoSn=" not in detail_url:
+                continue
 
             key = build_item_key(item_id, title, date_str, detail_url)
             items[key] = {
@@ -410,10 +416,38 @@ def fetch_list() -> list[dict]:
                 "url": detail_url,
             }
 
+    return list(items.values())
+
+
+def fetch_list(max_pages: int = DEFAULT_MAX_LIST_PAGES) -> list[dict]:
+    """
+    금감원 징계공시 목록 페이지에서 공시 항목을 가져온다.
+    대량 게시 때 신규 공시가 1페이지 밖으로 밀릴 수 있으므로 여러 페이지를 훑는다.
+    반환: [{"id": "12345", "key": "id:12345", "title": "...", "date": "...", "url": "..."}, ...]
+    """
+    print("금감원 사이트 접속 중...")
+
+    items: dict[str, dict] = {}
+
+    for page_index in range(1, max(1, max_pages) + 1):
+        resp = request_with_retry("GET", list_page_url(page_index), headers=HEADERS, timeout=30)
+        resp.raise_for_status()
+
+        page_items = parse_list_page(resp.text)
+        if not page_items:
+            break
+
+        before_count = len(items)
+        for item in page_items:
+            items[item["key"]] = item
+
+        if len(items) == before_count:
+            break
+
     result = list(items.values())
     result.sort(key=lambda x: (parse_date(x.get("date", "")), x.get("id", "")), reverse=True)
 
-    print(f"  → 공시 후보 {len(result)}건 확인")
+    print(f"  → 공시 후보 {len(result)}건 확인 ({max(1, max_pages)}페이지 스캔)")
     return result
 
 
