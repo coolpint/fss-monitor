@@ -89,6 +89,8 @@ class MonitorRunOnceTest(unittest.TestCase):
             send_alert.assert_called_once_with(older_unseen)
             saved = json.loads(seen_file.read_text(encoding="utf-8"))
             self.assertIn("id:older_unseen", saved["seen_keys"])
+            self.assertEqual(saved["seen_items"]["id:older_unseen"]["title"], "과거 일자 신규 공시")
+            self.assertEqual(saved["seen_items"]["id:older_unseen"]["status"], "notified")
             self.assertEqual(saved["latest_notice_date"], "2026.04.27")
 
     def test_failed_delivery_is_not_marked_seen(self):

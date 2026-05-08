@@ -250,34 +250,67 @@ def is_probably_pdf(content: bytes, content_type: str, filename: str) -> bool:
 # 상태 저장
 # ============================================================
 
-def load_state() -> tuple[set[str], str]:
-    """상태 파일에서 seen key와 최신 공시일(high-water date)을 불러온다."""
+def load_state_payload() -> dict:
+    """상태 파일 원본 payload를 불러온다."""
     if not SEEN_FILE.exists():
-        return set(), ""
+        return {}
 
     try:
         data = json.loads(SEEN_FILE.read_text(encoding="utf-8"))
     except Exception:
         print("⚠ seen.json 읽기 실패: 기록을 비우고 계속 진행합니다.")
-        return set(), ""
-
-    if isinstance(data, list):
-        # 구버전 호환
-        return set(str(x) for x in data), ""
+        return {}
 
     if isinstance(data, dict):
-        seen = data.get("seen_keys", [])
-        latest_notice_date = normalize_date(str(data.get("latest_notice_date", "")))
-        if isinstance(seen, list):
-            return set(str(x) for x in seen), latest_notice_date
+        return data
+    if isinstance(data, list):
+        return {"seen_keys": [str(x) for x in data]}
+    return {}
+
+
+def load_state() -> tuple[set[str], str]:
+    """상태 파일에서 seen key와 최신 공시일(high-water date)을 불러온다."""
+    data = load_state_payload()
+    if not data:
+        return set(), ""
+
+    seen = data.get("seen_keys", [])
+    latest_notice_date = normalize_date(str(data.get("latest_notice_date", "")))
+    if isinstance(seen, list):
+        return set(str(x) for x in seen), latest_notice_date
 
     return set(), ""
 
 
-def save_state(seen: set[str], latest_notice_date: str):
+def notice_record(item: dict, status: str, recorded_at: str) -> dict:
+    """seen.json에 사람이 확인할 수 있는 알림 메타데이터를 남긴다."""
+    return {
+        "id": item.get("id", ""),
+        "key": item.get("key", ""),
+        "title": item.get("title", ""),
+        "date": normalize_date(item.get("date", "")),
+        "url": item.get("url", ""),
+        "status": status,
+        "recorded_at": recorded_at,
+    }
+
+
+def save_state(seen: set[str], latest_notice_date: str, seen_items: dict = None):
     """상태 파일 저장."""
+    previous = load_state_payload()
+    previous_items = previous.get("seen_items", {})
+    if not isinstance(previous_items, dict):
+        previous_items = {}
+
+    merged_items = {k: v for k, v in previous_items.items() if k in seen}
+    if seen_items:
+        for key, record in seen_items.items():
+            if key in seen:
+                merged_items[key] = record
+
     payload = {
         "seen_keys": sorted(seen),
+        "seen_items": {k: merged_items[k] for k in sorted(merged_items)},
         "latest_notice_date": normalize_date(latest_notice_date),
         "saved_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     }
@@ -915,8 +948,10 @@ def run_once() -> int:
 
     if first_run:
         baseline = {i["key"] for i in items}
+        now_text = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        seen_items = {i["key"]: notice_record(i, "baseline", now_text) for i in items}
         latest_notice_date = max_notice_date(items)
-        save_state(baseline, latest_notice_date)
+        save_state(baseline, latest_notice_date, seen_items)
         print("\n초기 실행: 현재 공시 목록을 기준선으로 저장했습니다.")
         print("다음 실행부터 신규 공시만 알림합니다.")
         return 0
@@ -953,7 +988,8 @@ def run_once() -> int:
             seen.add(item["key"])
             if item_date_num and item_date_num > latest_date_num:
                 latest_notice_date = item_date
-            save_state(seen, latest_notice_date)
+            now_text = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            save_state(seen, latest_notice_date, {item["key"]: notice_record(item, "notified", now_text)})
         else:
             print("  ⚠ 알림 전송 실패: seen에 기록하지 않고 다음 실행에 재시도합니다.")
 
