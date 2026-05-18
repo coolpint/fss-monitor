@@ -81,7 +81,7 @@ class MonitorRunOnceTest(unittest.TestCase):
             with (
                 patch.object(monitor, "SEEN_FILE", seen_file),
                 patch.object(monitor, "fetch_list", return_value=[older_unseen]),
-                patch.object(monitor, "send_teams_link_alert", return_value=True) as send_alert,
+                patch.object(monitor, "send_telegram_link_alert", return_value=True) as send_alert,
             ):
                 processed = monitor.run_once()
 
@@ -111,7 +111,7 @@ class MonitorRunOnceTest(unittest.TestCase):
             with (
                 patch.object(monitor, "SEEN_FILE", seen_file),
                 patch.object(monitor, "fetch_list", return_value=[new_item]),
-                patch.object(monitor, "send_teams_link_alert", return_value=False),
+                patch.object(monitor, "send_telegram_link_alert", return_value=False),
             ):
                 processed = monitor.run_once()
 

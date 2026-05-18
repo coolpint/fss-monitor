@@ -4,9 +4,7 @@
 하는 일:
   1. 금감원 징계공시 페이지에 새 글이 올라왔는지 확인
   2. 새 글이 있으면 PDF 다운로드
-  3. Teams 채널로 알림 전송
-     - Graph API 설정 시: PDF를 채널 파일 폴더에 업로드 + 메시지 전송
-     - 미설정 시: Incoming Webhook 카드 알림(파일 업로드 불가)
+  3. Telegram으로 알림 전송
 
 사용법:
   python monitor.py                  ← 1회 실행
@@ -16,8 +14,8 @@
   python monitor.py --reset
 
 기본 동작:
-  - 신규 공시가 있으면 Teams로 "링크만" 전송
-  - PDF 다운로드/업로드는 ALERT_LINK_ONLY=0 일 때만 수행
+  - 신규 공시가 있으면 Telegram으로 "링크만" 전송
+  - PDF 다운로드는 ALERT_LINK_ONLY=0 일 때 수행하고 Telegram으로 저장 정보를 전송
 """
 
 import argparse
@@ -32,6 +30,7 @@ import sys
 import time
 from datetime import datetime, timedelta
 from pathlib import Path
+from typing import Optional
 from urllib.parse import parse_qsl, quote, unquote, urlencode, urljoin, urlparse, urlunparse
 
 import requests
@@ -41,16 +40,10 @@ from bs4 import BeautifulSoup
 # 설정
 # ============================================================
 
-# Teams Webhook은 환경변수/Actions secret으로만 주입한다.
-DEFAULT_WEBHOOK_URL = ""
-TEAMS_WEBHOOK_URL = os.getenv("TEAMS_WEBHOOK_URL", DEFAULT_WEBHOOK_URL)
+# Telegram Bot 설정은 환경변수/Actions secret으로만 주입한다.
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
+TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
 
-# Graph API 설정(파일 업로드용)
-TEAMS_TENANT_ID = os.getenv("TEAMS_TENANT_ID", "")
-TEAMS_CLIENT_ID = os.getenv("TEAMS_CLIENT_ID", "")
-TEAMS_CLIENT_SECRET = os.getenv("TEAMS_CLIENT_SECRET", "")
-TEAMS_TEAM_ID = os.getenv("TEAMS_TEAM_ID", "")
-TEAMS_CHANNEL_ID = os.getenv("TEAMS_CHANNEL_ID", "")
 
 # PDF 저장 폴더
 PDF_FOLDER = Path(__file__).parent / "pdfs"
@@ -600,327 +593,53 @@ def download_pdfs(item: dict) -> list[Path]:
 
 
 # ============================================================
-# Teams 전송
+# Telegram 전송
 # ============================================================
 
-def is_graph_enabled() -> bool:
-    return all([
-        TEAMS_TENANT_ID,
-        TEAMS_CLIENT_ID,
-        TEAMS_CLIENT_SECRET,
-        TEAMS_TEAM_ID,
-        TEAMS_CHANNEL_ID,
-    ])
-
-
-def graph_token() -> str:
-    token_url = f"https://login.microsoftonline.com/{TEAMS_TENANT_ID}/oauth2/v2.0/token"
-    data = {
-        "grant_type": "client_credentials",
-        "client_id": TEAMS_CLIENT_ID,
-        "client_secret": TEAMS_CLIENT_SECRET,
-        "scope": "https://graph.microsoft.com/.default",
-    }
-
-    resp = request_with_retry("POST", token_url, data=data, timeout=30)
-    if resp.status_code != 200:
-        raise RuntimeError(f"Graph 토큰 발급 실패: HTTP {resp.status_code} {resp.text[:300]}")
-
-    payload = resp.json()
-    token = payload.get("access_token")
-    if not token:
-        raise RuntimeError("Graph access_token 누락")
-    return token
-
-
-def graph_request(method: str, path: str, token: str, **kwargs) -> requests.Response:
-    url = f"https://graph.microsoft.com/v1.0{path}"
-    headers = kwargs.pop("headers", {})
-    headers["Authorization"] = f"Bearer {token}"
-    return request_with_retry(method, url, headers=headers, **kwargs)
-
-
-def graph_upload_pdf_to_channel(pdf_path: Path, token: str) -> str:
-    # 채널 파일 폴더 조회
-    folder_resp = graph_request(
-        "GET",
-        f"/teams/{TEAMS_TEAM_ID}/channels/{TEAMS_CHANNEL_ID}/filesFolder",
-        token,
-        timeout=30,
-    )
-    if folder_resp.status_code != 200:
-        raise RuntimeError(f"filesFolder 조회 실패: HTTP {folder_resp.status_code} {folder_resp.text[:200]}")
-
-    folder = folder_resp.json()
-    drive_id = folder.get("parentReference", {}).get("driveId")
-    folder_id = folder.get("id")
-
-    if not drive_id or not folder_id:
-        raise RuntimeError("filesFolder 응답에서 driveId/id를 찾지 못했습니다")
-
-    upload_name = quote(pdf_path.name, safe="")
-    upload_path = f"/drives/{drive_id}/items/{folder_id}:/{upload_name}:/content"
-
-    data = pdf_path.read_bytes()
-    up_resp = graph_request(
-        "PUT",
-        upload_path,
-        token,
-        headers={"Content-Type": "application/pdf"},
-        data=data,
-        timeout=120,
+def build_telegram_notice_text(item: dict, pdf_paths: Optional[list[Path]] = None) -> str:
+    pdf_lines = ""
+    if pdf_paths:
+        pdf_lines = "\nPDF: " + ", ".join(path.name for path in pdf_paths)
+    return (
+        "금감원 새 징계공시\n"
+        f"제목: {item.get('title', '(제목 없음)')}\n"
+        f"공시일: {item.get('date', '-')}\n"
+        f"원문: {item.get('url', FSS_LIST_URL)}"
+        f"{pdf_lines}"
     )
 
-    if up_resp.status_code not in (200, 201):
-        raise RuntimeError(f"파일 업로드 실패: HTTP {up_resp.status_code} {up_resp.text[:300]}")
 
-    uploaded = up_resp.json()
-    web_url = uploaded.get("webUrl")
-    if not web_url:
-        raise RuntimeError("업로드 성공했으나 webUrl이 없습니다")
-
-    return web_url
-
-
-def graph_post_channel_message(item: dict, file_links: list[tuple[str, str]], token: str):
-    title = html.escape(item.get("title", "(제목 없음)"))
-    date_text = html.escape(item.get("date", "-"))
-    source_url = html.escape(item.get("url", FSS_LIST_URL))
-
-    if file_links:
-        links_html = "".join(
-            [f"<li><a href='{html.escape(url)}'>{html.escape(name)}</a></li>" for name, url in file_links]
-        )
-    else:
-        links_html = "<li>(PDF 없음)</li>"
-
-    content = (
-        "<p><b>금감원 새 징계공시</b></p>"
-        f"<p><b>제목</b>: {title}<br/>"
-        f"<b>공시일</b>: {date_text}<br/>"
-        f"<a href='{source_url}'>원문 보기</a></p>"
-        f"<p><b>첨부 PDF</b></p><ul>{links_html}</ul>"
-    )
-
-    body = {
-        "body": {
-            "contentType": "html",
-            "content": content,
-        }
-    }
-
-    msg_resp = graph_request(
-        "POST",
-        f"/teams/{TEAMS_TEAM_ID}/channels/{TEAMS_CHANNEL_ID}/messages",
-        token,
-        headers={"Content-Type": "application/json"},
-        json=body,
-        timeout=30,
-    )
-
-    if msg_resp.status_code not in (200, 201):
-        raise RuntimeError(f"채널 메시지 전송 실패: HTTP {msg_resp.status_code} {msg_resp.text[:300]}")
-
-
-def send_teams_alert_webhook(item: dict, pdf_paths: list[Path]) -> bool:
-    """Incoming Webhook 카드 알림(파일 자체 업로드 불가)."""
-    if not TEAMS_WEBHOOK_URL:
-        print("  ⚠ TEAMS_WEBHOOK_URL이 설정되지 않았습니다 (알림 건너뜀)")
+def send_telegram_message(text: str) -> bool:
+    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
+        print("  ⚠ TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID가 설정되지 않았습니다 (알림 건너뜀)")
         return False
 
-    pdf_names = [p.name for p in pdf_paths] if pdf_paths else ["(첨부파일 없음)"]
-
-    card = {
-        "type": "message",
-        "attachments": [{
-            "contentType": "application/vnd.microsoft.card.adaptive",
-            "content": {
-                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-                "type": "AdaptiveCard",
-                "version": "1.4",
-                "body": [
-                    {
-                        "type": "TextBlock",
-                        "text": "금감원 새 징계공시",
-                        "weight": "Bolder",
-                        "size": "Large",
-                    },
-                    {
-                        "type": "TextBlock",
-                        "text": item.get("title", "(제목 없음)"),
-                        "wrap": True,
-                        "weight": "Bolder",
-                    },
-                    {
-                        "type": "FactSet",
-                        "facts": [
-                            {"title": "공시일", "value": item.get("date", "-")},
-                            {"title": "PDF", "value": ", ".join(pdf_names)},
-                        ],
-                    },
-                    {
-                        "type": "TextBlock",
-                        "text": f"PDF 저장 위치: {PDF_FOLDER}",
-                        "size": "Small",
-                        "isSubtle": True,
-                        "wrap": True,
-                    },
-                ],
-                "actions": [
-                    {
-                        "type": "Action.OpenUrl",
-                        "title": "금감원 원문 보기",
-                        "url": item.get("url", FSS_LIST_URL),
-                    }
-                ],
-            },
-        }],
-    }
-
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     resp = request_with_retry(
         "POST",
-        TEAMS_WEBHOOK_URL,
-        json=card,
-        headers={"Content-Type": "application/json"},
+        url,
+        json={
+            "chat_id": TELEGRAM_CHAT_ID,
+            "text": text,
+            "disable_web_page_preview": False,
+        },
         timeout=10,
     )
-
-    if resp.status_code in (200, 202):
-        print("  ✓ Teams Webhook 알림 발송 완료")
+    if resp.status_code == 200:
+        print("  ✓ Telegram 알림 발송 완료")
         return True
-
-    fallback = {
-        "@type": "MessageCard",
-        "@context": "http://schema.org/extensions",
-        "themeColor": "0076D7",
-        "summary": f"금감원 징계공시: {item.get('title', '(제목 없음)')}",
-        "sections": [{
-            "activityTitle": "금감원 새 징계공시",
-            "facts": [
-                {"name": "제목", "value": item.get("title", "(제목 없음)")},
-                {"name": "공시일", "value": item.get("date", "-")},
-                {"name": "PDF", "value": ", ".join(pdf_names)},
-            ],
-            "markdown": True,
-        }],
-        "potentialAction": [{
-            "@type": "OpenUri",
-            "name": "원문 보기",
-            "targets": [{"os": "default", "uri": item.get("url", FSS_LIST_URL)}],
-        }],
-    }
-
-    resp2 = request_with_retry("POST", TEAMS_WEBHOOK_URL, json=fallback, timeout=10)
-    if resp2.status_code in (200, 202):
-        print("  ✓ Teams Webhook 알림 발송 완료 (구형 포맷)")
-        return True
-    else:
-        print(f"  ⚠ Teams Webhook 발송 실패: HTTP {resp2.status_code}")
-        return False
+    print(f"  ⚠ Telegram 알림 발송 실패: HTTP {resp.status_code} {resp.text[:200]}")
+    return False
 
 
-def send_teams_link_alert(item: dict) -> bool:
-    """신규 공시 링크만 Teams Webhook으로 전송."""
-    if not TEAMS_WEBHOOK_URL:
-        print("  ⚠ TEAMS_WEBHOOK_URL이 설정되지 않았습니다 (알림 건너뜀)")
-        return False
-
-    card = {
-        "type": "message",
-        "attachments": [{
-            "contentType": "application/vnd.microsoft.card.adaptive",
-            "content": {
-                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-                "type": "AdaptiveCard",
-                "version": "1.4",
-                "body": [
-                    {
-                        "type": "TextBlock",
-                        "text": "금감원 새 징계공시",
-                        "weight": "Bolder",
-                        "size": "Large",
-                    },
-                    {
-                        "type": "TextBlock",
-                        "text": item.get("title", "(제목 없음)"),
-                        "wrap": True,
-                        "weight": "Bolder",
-                    },
-                    {
-                        "type": "FactSet",
-                        "facts": [
-                            {"title": "공시일", "value": item.get("date", "-")},
-                        ],
-                    },
-                ],
-                "actions": [
-                    {
-                        "type": "Action.OpenUrl",
-                        "title": "금감원 원문 보기",
-                        "url": item.get("url", FSS_LIST_URL),
-                    }
-                ],
-            },
-        }],
-    }
-
-    resp = request_with_retry(
-        "POST",
-        TEAMS_WEBHOOK_URL,
-        json=card,
-        headers={"Content-Type": "application/json"},
-        timeout=10,
-    )
-    if resp.status_code in (200, 202):
-        print("  ✓ Teams 링크 알림 발송 완료")
-        return True
-
-    fallback = {
-        "@type": "MessageCard",
-        "@context": "http://schema.org/extensions",
-        "themeColor": "0076D7",
-        "summary": f"금감원 징계공시: {item.get('title', '(제목 없음)')}",
-        "sections": [{
-            "activityTitle": "금감원 새 징계공시",
-            "facts": [
-                {"name": "제목", "value": item.get("title", "(제목 없음)")},
-                {"name": "공시일", "value": item.get("date", "-")},
-            ],
-            "markdown": True,
-        }],
-        "potentialAction": [{
-            "@type": "OpenUri",
-            "name": "원문 보기",
-            "targets": [{"os": "default", "uri": item.get("url", FSS_LIST_URL)}],
-        }],
-    }
-    resp2 = request_with_retry("POST", TEAMS_WEBHOOK_URL, json=fallback, timeout=10)
-    if resp2.status_code in (200, 202):
-        print("  ✓ Teams 링크 알림 발송 완료 (구형 포맷)")
-        return True
-    else:
-        print(f"  ⚠ Teams 링크 알림 발송 실패: HTTP {resp2.status_code}")
-        return False
+def send_telegram_link_alert(item: dict) -> bool:
+    """신규 공시 링크를 Telegram으로 전송."""
+    return send_telegram_message(build_telegram_notice_text(item))
 
 
-def send_teams_notification(item: dict, pdf_paths: list[Path]) -> bool:
-    """Graph 우선(파일 업로드), 실패/미설정 시 Webhook fallback."""
-    if is_graph_enabled():
-        try:
-            token = graph_token()
-            links = []
-            for pdf in pdf_paths:
-                web_url = graph_upload_pdf_to_channel(pdf, token)
-                links.append((pdf.name, web_url))
-            graph_post_channel_message(item, links, token)
-            print("  ✓ Teams 채널 전송 완료 (Graph: 파일 업로드 + 메시지)")
-            return True
-        except Exception as e:
-            print(f"  ⚠ Graph 전송 실패, Webhook으로 대체: {e}")
-    elif pdf_paths:
-        print("  ⚠ Graph 미설정: Webhook 알림만 전송됩니다(Teams 파일 업로드 불가).")
-
-    return send_teams_alert_webhook(item, pdf_paths)
+def send_telegram_notification(item: dict, pdf_paths: list[Path]) -> bool:
+    """PDF 다운로드 후에도 Telegram으로 공시 링크와 PDF 저장 정보를 알림."""
+    return send_telegram_message(build_telegram_notice_text(item, pdf_paths))
 
 
 # ============================================================
@@ -975,11 +694,11 @@ def run_once() -> int:
 
         delivered = False
         if ALERT_LINK_ONLY:
-            delivered = send_teams_link_alert(item)
+            delivered = send_telegram_link_alert(item)
         else:
             pdfs = download_pdfs(item)
             time.sleep(1)
-            delivered = send_teams_notification(item, pdfs)
+            delivered = send_telegram_notification(item, pdfs)
 
         if delivered:
             item_date = normalize_date(item.get("date", ""))
@@ -1082,11 +801,8 @@ def run_test(check_times: list[str]):
     except Exception as e:
         print(f"  ❌ 접속 실패: {e}")
 
-    print("\n[테스트 2] Teams 전송 경로...")
-    if ALERT_LINK_ONLY:
-        mode = "Webhook 링크 알림 전용(기본)"
-    else:
-        mode = "Graph(API, 파일 업로드 가능)" if is_graph_enabled() else "Webhook(파일 업로드 불가)"
+    print("\n[테스트 2] Telegram 전송 경로...")
+    mode = "Telegram 링크 알림 전용(기본)" if ALERT_LINK_ONLY else "PDF 다운로드 후 Telegram 알림"
     print(f"  현재 모드: {mode}")
 
     test_item = {
@@ -1099,11 +815,11 @@ def run_test(check_times: list[str]):
 
     try:
         if ALERT_LINK_ONLY:
-            send_teams_link_alert(test_item)
+            send_telegram_link_alert(test_item)
         else:
-            send_teams_notification(test_item, [])
+            send_telegram_notification(test_item, [])
     except Exception as e:
-        print(f"  ⚠ Teams 테스트 중 오류: {e}")
+        print(f"  ⚠ Telegram 테스트 중 오류: {e}")
 
     print("\n[테스트 3] PDF 저장 폴더...")
     PDF_FOLDER.mkdir(exist_ok=True)

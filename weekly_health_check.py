@@ -4,7 +4,7 @@
 하는 일:
   1. 최근 7일간 GitHub Actions monitor.yml 실행 이력을 확인
   2. 스케줄 실행 누락/실패 여부를 점검
-  3. 결과를 Teams Webhook으로 전송
+  3. 결과를 Telegram으로 전송
      - 정상이어도 "정상 작동 중" 메시지를 보냄
 """
 
@@ -273,62 +273,46 @@ def build_summary(
     )
 
 
-def send_teams_weekly_summary(summary: WeeklyHealthSummary, webhook_url: str) -> None:
-    if not webhook_url:
-        raise RuntimeError("TEAMS_WEBHOOK_URL이 설정되지 않았습니다.")
-
-    title = "금감원 징계공시 모니터 주간 점검"
+def format_weekly_summary_text(summary: WeeklyHealthSummary) -> str:
     status_text = "정상 작동 중" if summary.healthy else "점검 필요"
-    theme_color = "2E8B57" if summary.healthy else "C0392B"
-
-    facts = [
-        {"name": "점검 기간", "value": f"{format_kst(summary.window_start)} ~ {format_kst(summary.window_end)}"},
-        {"name": "예상 실행", "value": str(summary.expected_runs)},
-        {"name": "확인된 실행", "value": str(summary.actual_runs)},
-        {"name": "성공", "value": str(summary.successful_runs)},
-        {"name": "실패", "value": str(summary.failed_runs)},
-        {"name": "기타", "value": str(summary.other_runs)},
-        {
-            "name": "마지막 성공 실행",
-            "value": format_kst(summary.last_success_at) if summary.last_success_at else "-",
-        },
+    lines = [
+        "금감원 징계공시 모니터 주간 점검",
+        f"상태: {status_text}",
+        f"점검 기간: {format_kst(summary.window_start)} ~ {format_kst(summary.window_end)}",
+        f"예상 실행: {summary.expected_runs}",
+        f"확인된 실행: {summary.actual_runs}",
+        f"성공: {summary.successful_runs}",
+        f"실패: {summary.failed_runs}",
+        f"기타: {summary.other_runs}",
+        f"마지막 성공 실행: {format_kst(summary.last_success_at) if summary.last_success_at else '-'}",
     ]
-
-    body_lines = [f"상태: **{status_text}**"]
     if summary.detail_lines:
-        body_lines.append("")
-        body_lines.extend(summary.detail_lines)
+        lines.append("")
+        lines.extend(summary.detail_lines)
     else:
-        body_lines.append("")
-        body_lines.append("최근 1주 scheduled 실행 점검 결과, 실패나 누락 없이 정상적으로 작동했습니다.")
+        lines.append("")
+        lines.append("최근 1주 scheduled 실행 점검 결과, 실패나 누락 없이 정상적으로 작동했습니다.")
+    lines.append("")
+    lines.append(f"GitHub Actions: {summary.actions_url}")
+    return "\n".join(lines)
 
-    message = {
-        "@type": "MessageCard",
-        "@context": "http://schema.org/extensions",
-        "themeColor": theme_color,
-        "summary": f"금감원 징계공시 모니터 주간 점검: {status_text}",
-        "sections": [{
-            "activityTitle": title,
-            "text": "\n".join(body_lines),
-            "facts": facts,
-            "markdown": True,
-        }],
-        "potentialAction": [{
-            "@type": "OpenUri",
-            "name": "GitHub Actions 보기",
-            "targets": [{"os": "default", "uri": summary.actions_url}],
-        }],
-    }
+
+def send_telegram_weekly_summary(summary: WeeklyHealthSummary, bot_token: str, chat_id: str) -> None:
+    if not bot_token or not chat_id:
+        raise RuntimeError("TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID가 설정되지 않았습니다.")
 
     resp = request_with_retry(
         "POST",
-        webhook_url,
-        json=message,
-        headers={"Content-Type": "application/json"},
+        f"https://api.telegram.org/bot{bot_token}/sendMessage",
+        json={
+            "chat_id": chat_id,
+            "text": format_weekly_summary_text(summary),
+            "disable_web_page_preview": False,
+        },
         timeout=20,
     )
-    if resp.status_code not in (200, 202):
-        raise RuntimeError(f"Teams 전송 실패: HTTP {resp.status_code} {resp.text[:300]}")
+    if resp.status_code != 200:
+        raise RuntimeError(f"Telegram 전송 실패: HTTP {resp.status_code} {resp.text[:300]}")
 
 
 def parse_args() -> argparse.Namespace:
@@ -343,14 +327,15 @@ def parse_args() -> argparse.Namespace:
         default=DEFAULT_WINDOW_ANCHOR_UTC,
         help="주간 점검 기준 시각(예: FRI@06:45). 비우면 현재 시각 기준",
     )
-    parser.add_argument("--print-only", action="store_true", help="Teams 전송 없이 결과만 출력")
+    parser.add_argument("--print-only", action="store_true", help="Telegram 전송 없이 결과만 출력")
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
     github_token = os.getenv("GITHUB_TOKEN", "")
-    teams_webhook_url = os.getenv("TEAMS_WEBHOOK_URL", "")
+    telegram_bot_token = os.getenv("TELEGRAM_BOT_TOKEN", "")
+    telegram_chat_id = os.getenv("TELEGRAM_CHAT_ID", "")
 
     if not args.repository:
         raise RuntimeError("GITHUB_REPOSITORY 또는 --repository가 필요합니다.")
@@ -381,7 +366,7 @@ def main() -> None:
     }, ensure_ascii=False, indent=2))
 
     if not args.print_only:
-        send_teams_weekly_summary(summary, teams_webhook_url)
+        send_telegram_weekly_summary(summary, telegram_bot_token, telegram_chat_id)
 
 
 if __name__ == "__main__":

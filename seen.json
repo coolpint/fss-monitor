@@ -1474,5 +1474,1331 @@
     }
   },
   "latest_notice_date": "2026.05.12",
-  "saved_at": "2026-05-18 05:07:26"
+  "saved_at": "2026-05-18 19:09:56 KST",
+  "details": {
+    "id:202500229_1": {
+      "id": "202500229_1",
+      "key": "id:202500229_1",
+      "title": "국민은행 제재관련 공시",
+      "date": "2026.05.12",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=1&examMgmtNo=202500229&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500806_1": {
+      "id": "202500806_1",
+      "key": "id:202500806_1",
+      "title": "코람코자산신탁 제재관련 공시",
+      "date": "2026.05.08",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=1&examMgmtNo=202500806&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500307_1": {
+      "id": "202500307_1",
+      "key": "id:202500307_1",
+      "title": "동래농협 제재관련 공시",
+      "date": "2026.05.07",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=1&examMgmtNo=202500307&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500121_1": {
+      "id": "202500121_1",
+      "key": "id:202500121_1",
+      "title": "하나자산신탁 제재관련 공시",
+      "date": "2026.05.06",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=1&examMgmtNo=202500121&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500787_1": {
+      "id": "202500787_1",
+      "key": "id:202500787_1",
+      "title": "어스얼라이언스 주식회사 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=2&examMgmtNo=202500787&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500784_1": {
+      "id": "202500784_1",
+      "key": "id:202500784_1",
+      "title": "성수클럽 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=1&examMgmtNo=202500784&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500782_1": {
+      "id": "202500782_1",
+      "key": "id:202500782_1",
+      "title": "주식회사 세종기업데이터 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=2&examMgmtNo=202500782&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500779_1": {
+      "id": "202500779_1",
+      "key": "id:202500779_1",
+      "title": "월드에프엔에이치 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=2&examMgmtNo=202500779&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500774_1": {
+      "id": "202500774_1",
+      "key": "id:202500774_1",
+      "title": "주식회사 에이아이비 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=2&examMgmtNo=202500774&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500772_1": {
+      "id": "202500772_1",
+      "key": "id:202500772_1",
+      "title": "이오홀딩스 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=2&examMgmtNo=202500772&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500771_1": {
+      "id": "202500771_1",
+      "key": "id:202500771_1",
+      "title": "주식회사 바로경제연구소 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=3&examMgmtNo=202500771&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500767_1": {
+      "id": "202500767_1",
+      "key": "id:202500767_1",
+      "title": "주식회사 카마트솔루션 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=3&examMgmtNo=202500767&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500765_1": {
+      "id": "202500765_1",
+      "key": "id:202500765_1",
+      "title": "제이에스투자클럽 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=1&examMgmtNo=202500765&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500762_1": {
+      "id": "202500762_1",
+      "key": "id:202500762_1",
+      "title": "대구태풍주식공부방 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=1&examMgmtNo=202500762&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500759_1": {
+      "id": "202500759_1",
+      "key": "id:202500759_1",
+      "title": "(주)팍스넷 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=3&examMgmtNo=202500759&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500739_1": {
+      "id": "202500739_1",
+      "key": "id:202500739_1",
+      "title": "주식회사 알리솔루션 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=3&examMgmtNo=202500739&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500738_1": {
+      "id": "202500738_1",
+      "key": "id:202500738_1",
+      "title": "비전컨설팅그룹 주식회사 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=3&examMgmtNo=202500738&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500736_1": {
+      "id": "202500736_1",
+      "key": "id:202500736_1",
+      "title": "주식회사 인베스트리에셋 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=3&examMgmtNo=202500736&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500735_1": {
+      "id": "202500735_1",
+      "key": "id:202500735_1",
+      "title": "주식회사 미래국민파트너 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=2&examMgmtNo=202500735&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500734_1": {
+      "id": "202500734_1",
+      "key": "id:202500734_1",
+      "title": "주식회사 뉴지스탁 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=3&examMgmtNo=202500734&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500731_1": {
+      "id": "202500731_1",
+      "key": "id:202500731_1",
+      "title": "데일리투자그룹 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=4&examMgmtNo=202500731&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500730_1": {
+      "id": "202500730_1",
+      "key": "id:202500730_1",
+      "title": "이섭투자컨설팅 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=4&examMgmtNo=202500730&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500729_1": {
+      "id": "202500729_1",
+      "key": "id:202500729_1",
+      "title": "주식회사 데일리스탁 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=1&examMgmtNo=202500729&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500724_1": {
+      "id": "202500724_1",
+      "key": "id:202500724_1",
+      "title": "뉴츠컴퍼니 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=2&examMgmtNo=202500724&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500721_1": {
+      "id": "202500721_1",
+      "key": "id:202500721_1",
+      "title": "주식회사 데일리인베스트먼트 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=1&examMgmtNo=202500721&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500720_1": {
+      "id": "202500720_1",
+      "key": "id:202500720_1",
+      "title": "주식회사 잠실글로벌 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=2&examMgmtNo=202500720&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500716_1": {
+      "id": "202500716_1",
+      "key": "id:202500716_1",
+      "title": "대박투자그룹 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=1&examMgmtNo=202500716&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500715_1": {
+      "id": "202500715_1",
+      "key": "id:202500715_1",
+      "title": "레고컴퍼니 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=2&examMgmtNo=202500715&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500714_1": {
+      "id": "202500714_1",
+      "key": "id:202500714_1",
+      "title": "확률과 통계 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=2&examMgmtNo=202500714&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500709_1": {
+      "id": "202500709_1",
+      "key": "id:202500709_1",
+      "title": "선진인베스트 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=3&examMgmtNo=202500709&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500708_1": {
+      "id": "202500708_1",
+      "key": "id:202500708_1",
+      "title": "오즈커뮤니티 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=3&examMgmtNo=202500708&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500705_1": {
+      "id": "202500705_1",
+      "key": "id:202500705_1",
+      "title": "주차프 제재관련 공시",
+      "date": "2026.04.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=3&examMgmtNo=202500705&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400361_3": {
+      "id": "202400361_3",
+      "key": "id:202400361_3",
+      "title": "아이앤제이자산운용 제재관련 공시",
+      "date": "2026.04.28",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=4&examMgmtNo=202400361&emOpenSeq=3",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500015_2": {
+      "id": "202500015_2",
+      "key": "id:202500015_2",
+      "title": "도이치은행 제재관련 공시",
+      "date": "2026.04.27",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=4&examMgmtNo=202500015&emOpenSeq=2",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500044_1": {
+      "id": "202500044_1",
+      "key": "id:202500044_1",
+      "title": "경남은행 제재관련 공시",
+      "date": "2026.04.24",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=4&examMgmtNo=202500044&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500042_4": {
+      "id": "202500042_4",
+      "key": "id:202500042_4",
+      "title": "부산은행 제재관련 공시",
+      "date": "2026.04.24",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=4&examMgmtNo=202500042&emOpenSeq=4",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400481_3": {
+      "id": "202400481_3",
+      "key": "id:202400481_3",
+      "title": "국민은행 제재관련 공시",
+      "date": "2026.04.24",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=4&examMgmtNo=202400481&emOpenSeq=3",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500146_1": {
+      "id": "202500146_1",
+      "key": "id:202500146_1",
+      "title": "주식회사 하나은행 제재관련 공시",
+      "date": "2026.04.20",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=4&examMgmtNo=202500146&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202300782_1": {
+      "id": "202300782_1",
+      "key": "id:202300782_1",
+      "title": "골든브릿지자산운용 제재관련 공시",
+      "date": "2026.04.20",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=4&examMgmtNo=202300782&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500157_1": {
+      "id": "202500157_1",
+      "key": "id:202500157_1",
+      "title": "주식회사 아이케이파트너스 제재관련 공시",
+      "date": "2026.04.15",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=4&examMgmtNo=202500157&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500411_1": {
+      "id": "202500411_1",
+      "key": "id:202500411_1",
+      "title": "광안 제재관련 공시",
+      "date": "2026.04.07",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=5&examMgmtNo=202500411&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202000134_3": {
+      "id": "202000134_3",
+      "key": "id:202000134_3",
+      "title": "KB증권주식회사 제재관련 공시",
+      "date": "2026.04.07",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=5&examMgmtNo=202000134&emOpenSeq=3",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500651_1": {
+      "id": "202500651_1",
+      "key": "id:202500651_1",
+      "title": "광주어룡 제재관련 공시",
+      "date": "2026.04.03",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=5&examMgmtNo=202500651&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500587_1": {
+      "id": "202500587_1",
+      "key": "id:202500587_1",
+      "title": "미즈호 제재관련 공시",
+      "date": "2026.04.01",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=5&examMgmtNo=202500587&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500657_1": {
+      "id": "202500657_1",
+      "key": "id:202500657_1",
+      "title": "삼성생명보험주식회사 제재관련 공시",
+      "date": "2026.03.30",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=5&examMgmtNo=202500657&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500620_1": {
+      "id": "202500620_1",
+      "key": "id:202500620_1",
+      "title": "(주)유어즈에셋 보험대리점 제재관련 공시",
+      "date": "2026.03.30",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=5&examMgmtNo=202500620&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500100_1": {
+      "id": "202500100_1",
+      "key": "id:202500100_1",
+      "title": "양주축산농협 제재관련 공시",
+      "date": "2026.03.24",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=5&examMgmtNo=202500100&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500019_1": {
+      "id": "202500019_1",
+      "key": "id:202500019_1",
+      "title": "경성투자자문(주) 제재관련 공시",
+      "date": "2026.03.24",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=5&examMgmtNo=202500019&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500354_2": {
+      "id": "202500354_2",
+      "key": "id:202500354_2",
+      "title": "리딩투자증권주식회사 제재관련 공시",
+      "date": "2026.03.20",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=5&examMgmtNo=202500354&emOpenSeq=2",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500623_1": {
+      "id": "202500623_1",
+      "key": "id:202500623_1",
+      "title": "디아이홀딩스 주식회사 제재관련 공시",
+      "date": "2026.03.19",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=6&examMgmtNo=202500623&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500621_1": {
+      "id": "202500621_1",
+      "key": "id:202500621_1",
+      "title": "DB손해보험주식회사 제재관련 공시",
+      "date": "2026.03.19",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=6&examMgmtNo=202500621&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500619_1": {
+      "id": "202500619_1",
+      "key": "id:202500619_1",
+      "title": "더베스트금융서비스 주식회사 제재관련 공시",
+      "date": "2026.03.19",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=6&examMgmtNo=202500619&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500617_1": {
+      "id": "202500617_1",
+      "key": "id:202500617_1",
+      "title": "지에이코리아주식회사 제재관련 공시",
+      "date": "2026.03.19",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=5&examMgmtNo=202500617&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400644_1": {
+      "id": "202400644_1",
+      "key": "id:202400644_1",
+      "title": "주식회사 에스티자산운용 제재관련 공시",
+      "date": "2026.03.19",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=6&examMgmtNo=202400644&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400643_1": {
+      "id": "202400643_1",
+      "key": "id:202400643_1",
+      "title": "앤도버자산운용 주식회사 제재관련 공시",
+      "date": "2026.03.19",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=6&examMgmtNo=202400643&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400642_1": {
+      "id": "202400642_1",
+      "key": "id:202400642_1",
+      "title": "아스트라자산운용 제재관련 공시",
+      "date": "2026.03.19",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=6&examMgmtNo=202400642&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400641_1": {
+      "id": "202400641_1",
+      "key": "id:202400641_1",
+      "title": "엘에프자산운용 주식회사 제재관련 공시",
+      "date": "2026.03.19",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=6&examMgmtNo=202400641&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400640_1": {
+      "id": "202400640_1",
+      "key": "id:202400640_1",
+      "title": "㈜아르고스자산운용 제재관련 공시",
+      "date": "2026.03.19",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=6&examMgmtNo=202400640&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400639_1": {
+      "id": "202400639_1",
+      "key": "id:202400639_1",
+      "title": "허브자산운용 주식회사 제재관련 공시",
+      "date": "2026.03.19",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=6&examMgmtNo=202400639&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400638_1": {
+      "id": "202400638_1",
+      "key": "id:202400638_1",
+      "title": "넥스트증권 주식회사 제재관련 공시",
+      "date": "2026.03.19",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=6&examMgmtNo=202400638&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400834_1": {
+      "id": "202400834_1",
+      "key": "id:202400834_1",
+      "title": "유진투자증권주식회사 제재관련 공시",
+      "date": "2026.03.18",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=7&examMgmtNo=202400834&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400077_1": {
+      "id": "202400077_1",
+      "key": "id:202400077_1",
+      "title": "케이와이자산운용 제재관련 공시",
+      "date": "2026.03.18",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=7&examMgmtNo=202400077&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500568_1": {
+      "id": "202500568_1",
+      "key": "id:202500568_1",
+      "title": "토스증권 주식회사 제재관련 공시",
+      "date": "2026.03.13",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=7&examMgmtNo=202500568&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500520_1": {
+      "id": "202500520_1",
+      "key": "id:202500520_1",
+      "title": "메트라이프생명보험(주) 제재관련 공시",
+      "date": "2026.03.12",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=7&examMgmtNo=202500520&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500099_1": {
+      "id": "202500099_1",
+      "key": "id:202500099_1",
+      "title": "순천농협 제재관련 공시",
+      "date": "2026.03.12",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=7&examMgmtNo=202500099&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202300055_1": {
+      "id": "202300055_1",
+      "key": "id:202300055_1",
+      "title": "타이거대체투자운용주식회사 제재관련 공시",
+      "date": "2026.03.11",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=7&examMgmtNo=202300055&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500354_1": {
+      "id": "202500354_1",
+      "key": "id:202500354_1",
+      "title": "리딩투자증권주식회사 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=9&examMgmtNo=202500354&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500287_1": {
+      "id": "202500287_1",
+      "key": "id:202500287_1",
+      "title": "주식회사 제이엘케이파트너스파이낸셜대부 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=11&examMgmtNo=202500287&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500285_1": {
+      "id": "202500285_1",
+      "key": "id:202500285_1",
+      "title": "골드리치컨설팅대부 주식회사 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=11&examMgmtNo=202500285&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500277_1": {
+      "id": "202500277_1",
+      "key": "id:202500277_1",
+      "title": "주식회사 국민에이엠씨금융대부 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=11&examMgmtNo=202500277&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500276_1": {
+      "id": "202500276_1",
+      "key": "id:202500276_1",
+      "title": "하나에이엠씨대부 주식회사 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=11&examMgmtNo=202500276&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500275_1": {
+      "id": "202500275_1",
+      "key": "id:202500275_1",
+      "title": "주식회사 자산관리케이대부 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=11&examMgmtNo=202500275&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500270_1": {
+      "id": "202500270_1",
+      "key": "id:202500270_1",
+      "title": "희즈에셋대부금융 주식회사 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=10&examMgmtNo=202500270&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500269_1": {
+      "id": "202500269_1",
+      "key": "id:202500269_1",
+      "title": "한국자산관리원대부 주식회사 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=10&examMgmtNo=202500269&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500268_1": {
+      "id": "202500268_1",
+      "key": "id:202500268_1",
+      "title": "티티대부 주식회사 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=10&examMgmtNo=202500268&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500265_1": {
+      "id": "202500265_1",
+      "key": "id:202500265_1",
+      "title": "주식회사 케이원대부 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=10&examMgmtNo=202500265&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500264_1": {
+      "id": "202500264_1",
+      "key": "id:202500264_1",
+      "title": "주식회사 케이엠파이낸셜서비스대부 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=10&examMgmtNo=202500264&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500260_1": {
+      "id": "202500260_1",
+      "key": "id:202500260_1",
+      "title": "주식회사 웰스파트너스대부 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=10&examMgmtNo=202500260&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500259_1": {
+      "id": "202500259_1",
+      "key": "id:202500259_1",
+      "title": "주식회사 에이치에스에이치대부 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=10&examMgmtNo=202500259&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500257_1": {
+      "id": "202500257_1",
+      "key": "id:202500257_1",
+      "title": "주식회사 더파이널스대부 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=10&examMgmtNo=202500257&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500254_1": {
+      "id": "202500254_1",
+      "key": "id:202500254_1",
+      "title": "에이제이자산관리대부 주식회사 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=10&examMgmtNo=202500254&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500253_1": {
+      "id": "202500253_1",
+      "key": "id:202500253_1",
+      "title": "에스피엘자산대부 유한회사 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=10&examMgmtNo=202500253&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500251_1": {
+      "id": "202500251_1",
+      "key": "id:202500251_1",
+      "title": "송월자산관리대부 주식회사 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=9&examMgmtNo=202500251&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500249_1": {
+      "id": "202500249_1",
+      "key": "id:202500249_1",
+      "title": "삼원전국엔피엘대부금융 주식회사 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=9&examMgmtNo=202500249&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500248_1": {
+      "id": "202500248_1",
+      "key": "id:202500248_1",
+      "title": "분당엔피엘대부 주식회사 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=9&examMgmtNo=202500248&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500246_1": {
+      "id": "202500246_1",
+      "key": "id:202500246_1",
+      "title": "마루이대부 주식회사 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=9&examMgmtNo=202500246&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500245_1": {
+      "id": "202500245_1",
+      "key": "id:202500245_1",
+      "title": "리치금융진대부 주식회사 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=9&examMgmtNo=202500245&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500242_1": {
+      "id": "202500242_1",
+      "key": "id:202500242_1",
+      "title": "도도자산관리대부 주식회사 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=7&examMgmtNo=202500242&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500195_1": {
+      "id": "202500195_1",
+      "key": "id:202500195_1",
+      "title": "프라임에셋㈜ 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=7&examMgmtNo=202500195&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500194_1": {
+      "id": "202500194_1",
+      "key": "id:202500194_1",
+      "title": "케이지에이에셋㈜ 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=7&examMgmtNo=202500194&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500193_1": {
+      "id": "202500193_1",
+      "key": "id:202500193_1",
+      "title": "지에이코리아주식회사 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=7&examMgmtNo=202500193&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500192_1": {
+      "id": "202500192_1",
+      "key": "id:202500192_1",
+      "title": "(주)프리원 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=8&examMgmtNo=202500192&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500191_1": {
+      "id": "202500191_1",
+      "key": "id:202500191_1",
+      "title": "㈜케이엠아이에셋 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=8&examMgmtNo=202500191&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500190_1": {
+      "id": "202500190_1",
+      "key": "id:202500190_1",
+      "title": "(주)제우스라이프 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=8&examMgmtNo=202500190&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500189_1": {
+      "id": "202500189_1",
+      "key": "id:202500189_1",
+      "title": "㈜에즈금융서비스 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=8&examMgmtNo=202500189&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500188_1": {
+      "id": "202500188_1",
+      "key": "id:202500188_1",
+      "title": "주식회사 뉴니케 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=8&examMgmtNo=202500188&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500187_1": {
+      "id": "202500187_1",
+      "key": "id:202500187_1",
+      "title": "㈜비엡시금융서비스 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=8&examMgmtNo=202500187&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500186_1": {
+      "id": "202500186_1",
+      "key": "id:202500186_1",
+      "title": "서평택 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=8&examMgmtNo=202500186&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500185_1": {
+      "id": "202500185_1",
+      "key": "id:202500185_1",
+      "title": "삼성마리컨트리보험대리점 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=8&examMgmtNo=202500185&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500184_1": {
+      "id": "202500184_1",
+      "key": "id:202500184_1",
+      "title": "메트라이프금융서비스 주식회사 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=8&examMgmtNo=202500184&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500183_1": {
+      "id": "202500183_1",
+      "key": "id:202500183_1",
+      "title": "리더스금융판매㈜ 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=8&examMgmtNo=202500183&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500182_1": {
+      "id": "202500182_1",
+      "key": "id:202500182_1",
+      "title": "㈜글로벌금융판매 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=9&examMgmtNo=202500182&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500181_1": {
+      "id": "202500181_1",
+      "key": "id:202500181_1",
+      "title": "한화손해보험주식회사 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=9&examMgmtNo=202500181&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500180_1": {
+      "id": "202500180_1",
+      "key": "id:202500180_1",
+      "title": "삼성생명보험주식회사 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=9&examMgmtNo=202500180&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500179_1": {
+      "id": "202500179_1",
+      "key": "id:202500179_1",
+      "title": "DB손해보험주식회사 제재관련 공시",
+      "date": "2026.03.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=9&examMgmtNo=202500179&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400548_1": {
+      "id": "202400548_1",
+      "key": "id:202400548_1",
+      "title": "하나손해보험주식회사 제재관련 공시",
+      "date": "2026.02.27",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=11&examMgmtNo=202400548&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202300848_2": {
+      "id": "202300848_2",
+      "key": "id:202300848_2",
+      "title": "농협손해보험주식회사 제재관련 공시",
+      "date": "2026.02.27",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=11&examMgmtNo=202300848&emOpenSeq=2",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400415_1": {
+      "id": "202400415_1",
+      "key": "id:202400415_1",
+      "title": "리딩자산운용 주식회사 제재관련 공시",
+      "date": "2026.02.24",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=11&examMgmtNo=202400415&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202200377_1": {
+      "id": "202200377_1",
+      "key": "id:202200377_1",
+      "title": "주식회사 카사코리아 제재관련 공시",
+      "date": "2026.02.23",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=11&examMgmtNo=202200377&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202000487_1": {
+      "id": "202000487_1",
+      "key": "id:202000487_1",
+      "title": "포트코리아자산운용 주식회사 제재관련 공시",
+      "date": "2026.02.20",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=11&examMgmtNo=202000487&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500444_1": {
+      "id": "202500444_1",
+      "key": "id:202500444_1",
+      "title": "KB라이프생명보험 제재관련 공시",
+      "date": "2026.02.19",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=12&examMgmtNo=202500444&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202300319_1": {
+      "id": "202300319_1",
+      "key": "id:202300319_1",
+      "title": "리버스톤자산운용 제재관련 공시",
+      "date": "2026.02.13",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=12&examMgmtNo=202300319&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400095_2": {
+      "id": "202400095_2",
+      "key": "id:202400095_2",
+      "title": "한국자산신탁 제재관련 공시",
+      "date": "2026.02.12",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=12&examMgmtNo=202400095&emOpenSeq=2",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202300214_1": {
+      "id": "202300214_1",
+      "key": "id:202300214_1",
+      "title": "유안타증권주식회사 제재관련 공시",
+      "date": "2026.02.11",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=12&examMgmtNo=202300214&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202300212_1": {
+      "id": "202300212_1",
+      "key": "id:202300212_1",
+      "title": "KB증권주식회사 제재관련 공시",
+      "date": "2026.02.11",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=12&examMgmtNo=202300212&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202300211_1": {
+      "id": "202300211_1",
+      "key": "id:202300211_1",
+      "title": "신한투자증권 주식회사 제재관련 공시",
+      "date": "2026.02.11",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=12&examMgmtNo=202300211&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202300210_1": {
+      "id": "202300210_1",
+      "key": "id:202300210_1",
+      "title": "디비증권주식회사 제재관련 공시",
+      "date": "2026.02.11",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=12&examMgmtNo=202300210&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202300209_1": {
+      "id": "202300209_1",
+      "key": "id:202300209_1",
+      "title": "LS증권 제재관련 공시",
+      "date": "2026.02.11",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=12&examMgmtNo=202300209&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202300207_1": {
+      "id": "202300207_1",
+      "key": "id:202300207_1",
+      "title": "삼성증권(주) 제재관련 공시",
+      "date": "2026.02.11",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=12&examMgmtNo=202300207&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202300205_1": {
+      "id": "202300205_1",
+      "key": "id:202300205_1",
+      "title": "IBK투자증권 제재관련 공시",
+      "date": "2026.02.11",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=13&examMgmtNo=202300205&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202300203_1": {
+      "id": "202300203_1",
+      "key": "id:202300203_1",
+      "title": "하나증권주식회사 제재관련 공시",
+      "date": "2026.02.11",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=13&examMgmtNo=202300203&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202300202_1": {
+      "id": "202300202_1",
+      "key": "id:202300202_1",
+      "title": "한국투자증권 제재관련 공시",
+      "date": "2026.02.11",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=12&examMgmtNo=202300202&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202300756_1": {
+      "id": "202300756_1",
+      "key": "id:202300756_1",
+      "title": "파인앤파트너스자산운용주식회사 제재관련 공시",
+      "date": "2026.02.10",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=13&examMgmtNo=202300756&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400545_1": {
+      "id": "202400545_1",
+      "key": "id:202400545_1",
+      "title": "(주)리더스에셋어드바이저 제재관련 공시",
+      "date": "2026.02.05",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=13&examMgmtNo=202400545&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400337_1": {
+      "id": "202400337_1",
+      "key": "id:202400337_1",
+      "title": "㈜글로벌금융판매 제재관련 공시",
+      "date": "2026.02.04",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=13&examMgmtNo=202400337&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202300145_6": {
+      "id": "202300145_6",
+      "key": "id:202300145_6",
+      "title": "흥국생명보험주식회사 제재관련 공시",
+      "date": "2026.02.04",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=13&examMgmtNo=202300145&emOpenSeq=6",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202100623_2": {
+      "id": "202100623_2",
+      "key": "id:202100623_2",
+      "title": "㈜기업금융센타보험대리점 제재관련 공시",
+      "date": "2026.02.04",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=13&examMgmtNo=202100623&emOpenSeq=2",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400003_1": {
+      "id": "202400003_1",
+      "key": "id:202400003_1",
+      "title": "한국투자증권 제재관련 공시",
+      "date": "2026.01.30",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=13&examMgmtNo=202400003&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500102_1": {
+      "id": "202500102_1",
+      "key": "id:202500102_1",
+      "title": "오에스비저축은행 제재관련 공시",
+      "date": "2026.01.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=13&examMgmtNo=202500102&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500049_1": {
+      "id": "202500049_1",
+      "key": "id:202500049_1",
+      "title": "디비금융서비스㈜ 제재관련 공시",
+      "date": "2026.01.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=14&examMgmtNo=202500049&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400646_2": {
+      "id": "202400646_2",
+      "key": "id:202400646_2",
+      "title": "케이비라이프파트너스 제재관련 공시",
+      "date": "2026.01.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=14&examMgmtNo=202400646&emOpenSeq=2",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400379_1": {
+      "id": "202400379_1",
+      "key": "id:202400379_1",
+      "title": "(주)한국지에이금융서비스 제재관련 공시",
+      "date": "2026.01.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=14&examMgmtNo=202400379&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400333_2": {
+      "id": "202400333_2",
+      "key": "id:202400333_2",
+      "title": "㈜삼성생명금융서비스보험대리점 제재관련 공시",
+      "date": "2026.01.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=14&examMgmtNo=202400333&emOpenSeq=2",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400137_1": {
+      "id": "202400137_1",
+      "key": "id:202400137_1",
+      "title": "나무에셋(주) 제재관련 공시",
+      "date": "2026.01.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=14&examMgmtNo=202400137&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400136_1": {
+      "id": "202400136_1",
+      "key": "id:202400136_1",
+      "title": "한국중앙에셋(주) 제재관련 공시",
+      "date": "2026.01.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=14&examMgmtNo=202400136&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400012_2": {
+      "id": "202400012_2",
+      "key": "id:202400012_2",
+      "title": "NH투자증권 제재관련 공시",
+      "date": "2026.01.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=13&examMgmtNo=202400012&emOpenSeq=2",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400011_2": {
+      "id": "202400011_2",
+      "key": "id:202400011_2",
+      "title": "신한투자증권 주식회사 제재관련 공시",
+      "date": "2026.01.29",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=14&examMgmtNo=202400011&emOpenSeq=2",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400272_1": {
+      "id": "202400272_1",
+      "key": "id:202400272_1",
+      "title": "㈜카카오페이 제재관련 공시",
+      "date": "2026.01.28",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=14&examMgmtNo=202400272&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202300828_1": {
+      "id": "202300828_1",
+      "key": "id:202300828_1",
+      "title": "KB증권주식회사 제재관련 공시",
+      "date": "2026.01.28",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=14&examMgmtNo=202300828&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202300827_1": {
+      "id": "202300827_1",
+      "key": "id:202300827_1",
+      "title": "미래에셋증권 주식회사 제재관련 공시",
+      "date": "2026.01.28",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=14&examMgmtNo=202300827&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400090_1": {
+      "id": "202400090_1",
+      "key": "id:202400090_1",
+      "title": "모아저축은행 제재관련 공시",
+      "date": "2026.01.26",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=15&examMgmtNo=202400090&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500111_1": {
+      "id": "202500111_1",
+      "key": "id:202500111_1",
+      "title": "주식회사 뱅크샐러드 제재관련 공시",
+      "date": "2026.01.20",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=15&examMgmtNo=202500111&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202500110_1": {
+      "id": "202500110_1",
+      "key": "id:202500110_1",
+      "title": "주식회사 핀다 제재관련 공시",
+      "date": "2026.01.20",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=15&examMgmtNo=202500110&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202400016_1": {
+      "id": "202400016_1",
+      "key": "id:202400016_1",
+      "title": "삼성증권(주) 제재관련 공시",
+      "date": "2026.01.20",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=15&examMgmtNo=202400016&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202300060_1": {
+      "id": "202300060_1",
+      "key": "id:202300060_1",
+      "title": "제이씨에셋자산운용 주식회사 제재관련 공시",
+      "date": "2026.01.14",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=15&examMgmtNo=202300060&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202300746_4": {
+      "id": "202300746_4",
+      "key": "id:202300746_4",
+      "title": "주식회사 하나은행 제재관련 공시",
+      "date": "2026.01.08",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=15&examMgmtNo=202300746&emOpenSeq=4",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    },
+    "id:202200669_1": {
+      "id": "202200669_1",
+      "key": "id:202200669_1",
+      "title": "이지스리얼에셋투자운용 주식회사 제재관련 공시",
+      "date": "2026.01.02",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=15&examMgmtNo=202200669&emOpenSeq=1",
+      "status": "baseline_after_2026-05-18_test",
+      "recorded_at": "2026-05-18 19:09:56 KST"
+    }
+  },
+  "baseline_note": "2026-05-18: 국민은행 제재관련 공시(id:202500229_1)로 Auto-Writer 인계 패키지 테스트 후 현재 목록 전체를 기준선으로 저장. 이후 올라오는 공시만 신규 처리."
 }

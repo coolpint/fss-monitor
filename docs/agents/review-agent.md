@@ -9,13 +9,14 @@ review agent는 변경이 생긴 뒤 코드, 운영 안전성, 문서 기록, �
 1. `plan.md`
 2. `constitution.md`
 3. `docs/agents/constitution-agent.md`
-4. 변경된 코드와 문서
+4. Auto-Writer/CMS 인계 변경 시 `docs/agents/auto-writer-publisher-agent.md`
+5. 변경된 코드와 문서
 
 ## 리뷰 시점
 
 - 코드가 변경되었을 때
-- GitHub Actions, Teams 알림, 스케줄, 상태 파일 구조가 변경되었을 때
-- Gemini Gems 또는 moneynlaw.co.kr 자동화가 추가/수정되었을 때
+- GitHub Actions, Telegram 알림, 스케줄, 상태 파일 구조가 변경되었을 때
+- Auto-Writer 인계 또는 moneynlaw.co.kr 저장 흐름이 추가/수정되었을 때
 - `plan.md`, `constitution.md`, agent 문서가 변경되었을 때
 - 중요한 의사결정이 있었을 가능성이 있을 때
 
@@ -24,9 +25,10 @@ review agent는 변경이 생긴 뒤 코드, 운영 안전성, 문서 기록, �
 ### 코드와 동작
 
 - 변경이 요청 범위에 맞는가?
-- 기존 Teams 알림과 GitHub Actions 동작을 의도치 않게 깨뜨리지 않는가?
+- Telegram 알림과 GitHub Actions 동작을 의도치 않게 깨뜨리지 않는가?
 - PDF 다운로드, 상태 저장, 중복 방지, 실패 재시도 흐름이 안전한가?
-- 외부 웹 UI 자동화가 실패할 때 멈추고 확인 가능한 상태를 남기는가?
+- Auto-Writer 인계 파일(`auto_writer_source.md`, `auto_writer_task.md`, `auto_writer_state.json`)이 실제 현재 기준과 맞는가?
+- CMS 저장 단계가 공개 발행/승인 완료가 아니라 미승인/검토 대기 저장으로 제한되는가?
 - 비밀 정보, 로그인 정보, 쿠키, 웹훅, API 키가 코드나 문서에 노출되지 않았는가?
 - 파일 삭제에 `rm`을 쓰지 않았는가?
 - 기기 이동용 인계 패키지를 만들었다면, 추적 파일에 비밀 정보 없이 필요한 산출물만 담겼는가?
@@ -36,7 +38,7 @@ review agent는 변경이 생긴 뒤 코드, 운영 안전성, 문서 기록, �
 - 중요한 판단이 있었는가?
 - 있었다면 `constitution.md` 기준에 맞는가?
 - 애매하거나 사용자 영향이 큰 결정이었다면 constitution agent 검토 또는 사용자 확인이 있었는가?
-- 자동 발행, 공개 저장, 모델/API 변경, 인증 방식 변경이 사용자 승인 없이 들어가지 않았는가?
+- 자동 발행, 공개 저장, 생성/게시 시스템 변경, 인증 방식 변경이 사용자 승인 없이 들어가지 않았는가?
 
 ### 문서와 기록
 
@@ -49,7 +51,7 @@ review agent는 변경이 생긴 뒤 코드, 운영 안전성, 문서 기록, �
 
 - 가능한 테스트나 정적 검사를 실행했는가?
 - 실행하지 못했다면 이유가 명확한가?
-- 브라우저 자동화나 외부 서비스 조작은 실제 계정/권한/화면 상태가 필요한지 구분했는가?
+- 외부 서비스 조작은 실제 계정/권한/화면 상태가 필요한지 구분했는가?
 
 ## 출력 형식
 
