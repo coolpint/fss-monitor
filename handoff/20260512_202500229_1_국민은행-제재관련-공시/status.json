@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "status": "auto_writer_ready",
+  "updated_at": "2026-05-18T19:06:29+09:00",
+  "item_key": "id:202500229_1",
+  "job_dir": "/Users/sanghoon/codes/fss-monitor/handoff/20260512_202500229_1_국민은행-제재관련-공시",
+  "pdfs": [
+    "/Users/sanghoon/codes/fss-monitor/handoff/20260512_202500229_1_국민은행-제재관련-공시/source.pdf"
+  ],
+  "auto_writer_source": {
+    "path": "/Users/sanghoon/codes/fss-monitor/handoff/20260512_202500229_1_국민은행-제재관련-공시/auto_writer_source.md",
+    "mode": "live",
+    "channel": "fss-monitor",
+    "truncated": false,
+    "max_chars": 120000
+  },
+  "auto_writer": {
+    "ready": true,
+    "task_path": "/Users/sanghoon/codes/fss-monitor/handoff/20260512_202500229_1_국민은행-제재관련-공시/auto_writer_task.md",
+    "state_path": "/Users/sanghoon/codes/fss-monitor/handoff/20260512_202500229_1_국민은행-제재관련-공시/auto_writer_state.json",
+    "source_path": "/Users/sanghoon/codes/fss-monitor/handoff/20260512_202500229_1_국민은행-제재관련-공시/auto_writer_source.md",
+    "command": "node src/index.js run --mode live --channel fss-monitor --source /Users/sanghoon/codes/fss-monitor/handoff/20260512_202500229_1_국민은행-제재관련-공시/auto_writer_source.md",
+    "blockers": []
+  },
+  "requires": {
+    "auto_writer_project_dir": false,
+    "human_publish_approval": false,
+    "auto_writer": true
+  },
+  "cms_review_status": "미승인",
+  "errors": [],
+  "next_files": [
+    "handoff.md",
+    "auto_writer_source.md",
+    "auto_writer_task.md",
+    "auto_writer_state.json"
+  ]
+}

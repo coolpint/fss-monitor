@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "stage": "ready_for_auto_writer",
+  "updated_at": "2026-05-18T19:06:29+09:00",
+  "job_dir": "/Users/sanghoon/codes/fss-monitor/handoff/20260512_202500229_1_국민은행-제재관련-공시",
+  "item_key": "id:202500229_1",
+  "item": {
+    "id": "202500229_1",
+    "key": "id:202500229_1",
+    "title": "국민은행 제재관련 공시",
+    "date": "2026.05.12",
+    "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-18&pageIndex=1&examMgmtNo=202500229&emOpenSeq=1"
+  },
+  "safe_to_save_for_review": true,
+  "cms_review_status": "미승인",
+  "auto_writer": {
+    "project_dir": "/Users/sanghoon/codes/Auto-Writer",
+    "mode": "live",
+    "channel": "fss-monitor",
+    "source_path": "/Users/sanghoon/codes/fss-monitor/handoff/20260512_202500229_1_국민은행-제재관련-공시/auto_writer_source.md",
+    "command": "node src/index.js run --mode live --channel fss-monitor --source /Users/sanghoon/codes/fss-monitor/handoff/20260512_202500229_1_국민은행-제재관련-공시/auto_writer_source.md"
+  },
+  "image_prompt": "당신은 뉴요커의 전설적 만평가인 Herbert Block 스타일을 매우 충실하게 구현할 수 있는 재치 넘치는 화가야. 주어진 주제, 키워드 또는 기사 내용을 바탕으로 재미있는 일러스트를 그려야 해.\n\n인종적인 혐오로 오해될 수 있는 스타일은 피해줘. 대신 만평가니까 자유로운 사고는 추천해.\n\n오브제가 너무 많아서 이해하기 복잡한 그림은 지양하도록. 글씨도  사용하지 말 것. 풍자처럼 그림 아래에 한 줄 적는 건 가능. 특히 영어 사용 금지.\n\n검은색 펜화지만, 가벼운 파스텔톤 수채화풍 채색을 옅게 하는 것은 허용\n\n뉴요커 만평 스타일 지향.",
+  "blockers": [],
+  "extraction_errors": [],
+  "outputs": {
+    "auto_writer_job_dir": "",
+    "cms_article_url": "",
+    "cms_article_id": "",
+    "cms_status": ""
+  },
+  "history": [
+    {
+      "at": "2026-05-18T19:06:29+09:00",
+      "event": "auto_writer_task_created",
+      "ready": true
+    }
+  ]
+}
