@@ -232,6 +232,13 @@ def build_summary(
     if successful_runs:
         last_success_at = max(parse_iso_datetime(run["created_at"]) for run in successful_runs)
 
+    blocking_other_runs = []
+    for run in other_runs:
+        created_at = parse_iso_datetime(run["created_at"])
+        if last_success_at and created_at < last_success_at:
+            continue
+        blocking_other_runs.append(run)
+
     detail_lines = []
 
     if not scheduled_runs:
@@ -251,8 +258,8 @@ def build_summary(
                 f"- {run_time} / conclusion={run.get('conclusion', '-')}"
             )
 
-    if other_runs:
-        detail_lines.append(f"완료되지 않은 scheduled 실행이 {len(other_runs)}회 있습니다.")
+    if blocking_other_runs:
+        detail_lines.append(f"완료되지 않은 scheduled 실행이 {len(blocking_other_runs)}회 있습니다.")
 
     healthy = not detail_lines
     actions_url = f"https://github.com/{repository}/actions/workflows/{workflow_file}"
@@ -266,7 +273,7 @@ def build_summary(
         actual_runs=len(scheduled_runs),
         successful_runs=len(successful_runs),
         failed_runs=len(failed_runs),
-        other_runs=len(other_runs),
+        other_runs=len(blocking_other_runs),
         last_success_at=last_success_at,
         detail_lines=detail_lines,
         actions_url=actions_url,
@@ -315,6 +322,44 @@ def send_telegram_weekly_summary(summary: WeeklyHealthSummary, bot_token: str, c
         raise RuntimeError(f"Telegram 전송 실패: HTTP {resp.status_code} {resp.text[:300]}")
 
 
+def send_teams_weekly_summary(summary: WeeklyHealthSummary, webhook_url: str) -> None:
+    if not webhook_url:
+        raise RuntimeError("TEAMS_WEBHOOK_URL이 설정되지 않았습니다.")
+
+    text = format_weekly_summary_text(summary)
+    resp = request_with_retry(
+        "POST",
+        webhook_url,
+        json={
+            "@type": "MessageCard",
+            "@context": "http://schema.org/extensions",
+            "summary": "금감원 징계공시 모니터 주간 점검",
+            "sections": [{
+                "text": text.replace("\n", "<br>"),
+                "markdown": True,
+            }],
+        },
+        timeout=20,
+    )
+    if resp.status_code not in (200, 202):
+        raise RuntimeError(f"Teams Webhook 전송 실패: HTTP {resp.status_code} {resp.text[:300]}")
+
+
+def send_weekly_summary(
+    summary: WeeklyHealthSummary,
+    telegram_bot_token: str,
+    telegram_chat_id: str,
+    teams_webhook_url: str,
+) -> None:
+    if telegram_bot_token and telegram_chat_id:
+        send_telegram_weekly_summary(summary, telegram_bot_token, telegram_chat_id)
+        return
+    if teams_webhook_url:
+        send_teams_weekly_summary(summary, teams_webhook_url)
+        return
+    raise RuntimeError("Telegram 또는 Teams 알림 설정이 없습니다.")
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="금감원 징계공시 모니터 주간 상태 점검")
     parser.add_argument("--repository", default=os.getenv("GITHUB_REPOSITORY", ""))
@@ -336,6 +381,7 @@ def main() -> None:
     github_token = os.getenv("GITHUB_TOKEN", "")
     telegram_bot_token = os.getenv("TELEGRAM_BOT_TOKEN", "")
     telegram_chat_id = os.getenv("TELEGRAM_CHAT_ID", "")
+    teams_webhook_url = os.getenv("TEAMS_WEBHOOK_URL", "")
 
     if not args.repository:
         raise RuntimeError("GITHUB_REPOSITORY 또는 --repository가 필요합니다.")
@@ -366,7 +412,7 @@ def main() -> None:
     }, ensure_ascii=False, indent=2))
 
     if not args.print_only:
-        send_telegram_weekly_summary(summary, telegram_bot_token, telegram_chat_id)
+        send_weekly_summary(summary, telegram_bot_token, telegram_chat_id, teams_webhook_url)
 
 
 if __name__ == "__main__":

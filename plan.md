@@ -64,6 +64,7 @@ GitHub Actions secrets 또는 로컬 환경변수:
 
 - `TELEGRAM_BOT_TOKEN`
 - `TELEGRAM_CHAT_ID`
+- `TEAMS_WEBHOOK_URL` 선택값. Telegram 설정이 없을 때 기존 Teams Webhook fallback으로 사용한다.
 - `FSS_MAX_LIST_PAGES` 선택값
 - `AUTO_WRITER_PROJECT_DIR` 선택값, 기본 `/Users/sanghoon/codes/Auto-Writer`
 - `AUTO_WRITER_MODE` 선택값, 기본 `live`
@@ -80,11 +81,12 @@ GitHub Actions secrets 또는 로컬 환경변수:
 - 새 공시는 공시일과 상관없이 `seen.json`에 없으면 알림한다.
 - 알림 실패 시 `seen.json`에 기록하지 않고 다음 실행에서 재시도한다.
 
-### Phase 2. Telegram 운영
+### Phase 2. 알림 운영
 
 - 신규 공시는 Telegram으로 알린다.
 - 주간 상태 점검도 Telegram으로 보낸다.
-- Telegram 관련 설정과 코드를 현재 운영 기준으로 유지한다.
+- Telegram secrets가 준비되지 않은 환경에서는 기존 `TEAMS_WEBHOOK_URL`로 fallback한다.
+- 알림 설정 누락 때문에 모니터가 조용히 무력화되지 않도록 테스트와 헬스체크를 유지한다.
 
 ### Phase 3. Auto-Writer 인계
 
@@ -110,6 +112,11 @@ GitHub Actions secrets 또는 로컬 환경변수:
 - 결정: 금감원 징계해설 기사에는 별도 이미지 프롬프트를 적용한다.
 - 결정: 오늘 확인한 새 공시는 테스트 처리 후 기준선에 포함하고, 이후 올라오는 공시를 신규 대상으로 삼는다.
 
+### 2026-05-23
+
+- 결정: Telegram을 우선 알림 채널로 유지하되, 현재 저장소 secrets에는 `TEAMS_WEBHOOK_URL`만 있으므로 Telegram secrets가 없으면 Teams Webhook으로 fallback한다.
+- 결정: 주간 헬스체크에서 오래된 queued run은 이후 성공 실행이 있으면 장애로 보지 않는다.
+
 ## 8. 작업 기록
 
 ### 2026-05-18
@@ -125,9 +132,21 @@ GitHub Actions secrets 또는 로컬 환경변수:
 - 해당 공시 PDF를 다운로드하고 `runs/20260512_202500229_1_국민은행-제재관련-공시/`에 Auto-Writer 인계 패키지를 생성했다. 상태는 `auto_writer_ready`, CMS 검토 상태는 `미승인`이다.
 - 현재 목록 147건을 기준선으로 저장했다. 이번에 기준선에 새로 포함된 키는 `id:202500229_1`, `id:202500806_1`, `id:202500121_1`이며, 이후 올라오는 공시만 신규 대상으로 삼는다.
 
+### 2026-05-23
+
+- 주간 헬스체크 실패를 조사했다. 실제 모니터 scheduled run은 계속 성공 중이었고, 실패 원인은 Telegram secrets 부재와 오래된 queued run 판정이었다.
+- `monitor.py`와 `weekly_health_check.py`가 Telegram secrets 부재 시 기존 `TEAMS_WEBHOOK_URL`로 fallback하도록 수정했다.
+- `weekly_health_check.py`는 오래된 queued run 뒤에 성공 실행이 있으면 해당 queued run을 헬스체크 실패 원인으로 보지 않도록 바꿨다.
+- 로컬 검증 결과, 현재 주간 헬스체크 요약은 `healthy=true`, 실패 0건, 미완료 0건으로 계산된다.
+
 ## 9. 변경 기록
 
 ### 2026-05-18
 
 - 현재 기준과 혼동되는 과거 직접 브라우저 조작 중심 설명을 제거했다.
 - 현재 운영 모델을 Telegram 알림 + Auto-Writer 인계로 단순화했다.
+
+### 2026-05-23
+
+- 알림 운영 모델을 Telegram 우선 + Teams fallback으로 보강했다.
+- 주간 헬스체크의 오래된 queued run false positive를 제거했다.

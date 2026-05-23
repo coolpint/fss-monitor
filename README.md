@@ -34,12 +34,15 @@ python monitor.py --test
 python monitor.py --reset
 ```
 
-## Telegram 설정
+## 알림 설정
 
-GitHub Actions 또는 로컬 환경변수에 아래 값을 설정합니다. 실제 토큰과 채팅 ID는 저장소에 기록하지 않습니다.
+GitHub Actions 또는 로컬 환경변수에 아래 값을 설정합니다. 실제 토큰, 채팅 ID, 웹훅은 저장소에 기록하지 않습니다.
+
+기본 우선순위는 Telegram이고, Telegram 설정이 없으면 기존 Teams Webhook으로 대체합니다.
 
 - `TELEGRAM_BOT_TOKEN`
 - `TELEGRAM_CHAT_ID`
+- `TEAMS_WEBHOOK_URL`
 
 GitHub Actions에서는 `Settings > Secrets and variables > Actions`에 같은 이름의 secrets로 등록합니다.
 
@@ -113,15 +116,15 @@ python monitor.py
 
 - `.github/workflows/monitor.yml` 기준으로 매시간 실행됩니다.
 - GitHub Actions는 원격 저장소(`origin/main`)의 코드를 실행하므로, 로컬 수정 후 반드시 `git push`까지 해야 반영됩니다.
-- GitHub secrets에 `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`를 등록하세요.
+- GitHub secrets에 `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`를 등록하세요. 아직 Telegram을 쓰지 않으면 기존 `TEAMS_WEBHOOK_URL`로 대체 전송됩니다.
 - 대량 게시가 있을 수 있으므로 기본적으로 금감원 목록 30페이지를 훑습니다. 필요하면 `FSS_MAX_LIST_PAGES` 환경변수로 늘릴 수 있습니다.
 
 ### 방법 D: 주간 상태 점검
 
 - `.github/workflows/weekly-health-check.yml` 기준으로 매주 금요일 `15:45`(KST)에 실행됩니다.
-- 최근 7일간 `monitor.yml` scheduled 실행 이력을 점검하고, 이상이 없어도 Telegram으로 `정상 작동 중` 메시지를 보냅니다.
+- 최근 7일간 `monitor.yml` scheduled 실행 이력을 점검하고, 이상이 없어도 Telegram 또는 Teams로 `정상 작동 중` 메시지를 보냅니다.
 - 점검 기간은 실제 워크플로 시작 시각이 아니라 주간 점검의 예정 시각(`금요일 15:45 KST`)에 고정해 계산합니다.
-- 실패, 실행 누락, 미완료 run이 있으면 Telegram에 `점검 필요` 상태로 요약을 보냅니다.
+- 실패, 실행 누락, 미완료 run이 있으면 Telegram 또는 Teams에 `점검 필요` 상태로 요약을 보냅니다.
 
 ## 주의
 

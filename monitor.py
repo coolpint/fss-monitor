@@ -43,6 +43,7 @@ from bs4 import BeautifulSoup
 # Telegram Bot 설정은 환경변수/Actions secret으로만 주입한다.
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
+TEAMS_WEBHOOK_URL = os.getenv("TEAMS_WEBHOOK_URL", "")
 
 
 # PDF 저장 폴더
@@ -610,25 +611,42 @@ def build_telegram_notice_text(item: dict, pdf_paths: Optional[list[Path]] = Non
 
 
 def send_telegram_message(text: str) -> bool:
-    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
-        print("  ⚠ TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID가 설정되지 않았습니다 (알림 건너뜀)")
+    if TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID:
+        url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+        resp = request_with_retry(
+            "POST",
+            url,
+            json={
+                "chat_id": TELEGRAM_CHAT_ID,
+                "text": text,
+                "disable_web_page_preview": False,
+            },
+            timeout=10,
+        )
+        if resp.status_code == 200:
+            print("  ✓ Telegram 알림 발송 완료")
+            return True
+        print(f"  ⚠ Telegram 알림 발송 실패: HTTP {resp.status_code} {resp.text[:200]}")
         return False
 
-    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-    resp = request_with_retry(
-        "POST",
-        url,
-        json={
-            "chat_id": TELEGRAM_CHAT_ID,
-            "text": text,
-            "disable_web_page_preview": False,
-        },
-        timeout=10,
-    )
-    if resp.status_code == 200:
-        print("  ✓ Telegram 알림 발송 완료")
-        return True
-    print(f"  ⚠ Telegram 알림 발송 실패: HTTP {resp.status_code} {resp.text[:200]}")
+    if TEAMS_WEBHOOK_URL:
+        card = {
+            "@type": "MessageCard",
+            "@context": "http://schema.org/extensions",
+            "summary": text.splitlines()[0] if text else "금감원 징계공시 알림",
+            "sections": [{
+                "text": text.replace("\n", "<br>"),
+                "markdown": True,
+            }],
+        }
+        resp = request_with_retry("POST", TEAMS_WEBHOOK_URL, json=card, timeout=10)
+        if resp.status_code in (200, 202):
+            print("  ✓ Teams Webhook 알림 발송 완료")
+            return True
+        print(f"  ⚠ Teams Webhook 알림 발송 실패: HTTP {resp.status_code} {resp.text[:200]}")
+        return False
+
+    print("  ⚠ TELEGRAM 또는 TEAMS 알림 설정이 없습니다 (알림 건너뜀)")
     return False
 
 

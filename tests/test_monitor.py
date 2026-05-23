@@ -63,6 +63,23 @@ class MonitorRunOnceTest(unittest.TestCase):
 
         self.assertEqual(monitor.parse_list_page(html), [])
 
+    def test_notification_falls_back_to_teams(self):
+        class Response:
+            status_code = 200
+            text = "ok"
+
+        with (
+            patch.object(monitor, "TELEGRAM_BOT_TOKEN", ""),
+            patch.object(monitor, "TELEGRAM_CHAT_ID", ""),
+            patch.object(monitor, "TEAMS_WEBHOOK_URL", "https://teams.example/webhook"),
+            patch.object(monitor, "request_with_retry", return_value=Response()) as request,
+        ):
+            self.assertTrue(monitor.send_telegram_message("금감원 새 징계공시\n본문"))
+
+        request.assert_called_once()
+        _, url = request.call_args.args[:2]
+        self.assertEqual(url, "https://teams.example/webhook")
+
     def test_unseen_older_date_is_alerted(self):
         with tempfile.TemporaryDirectory() as tmp:
             seen_file = Path(tmp) / "seen.json"
