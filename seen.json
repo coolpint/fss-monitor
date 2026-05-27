@@ -20,6 +20,7 @@
     "id:202300212_1",
     "id:202300214_1",
     "id:202300319_1",
+    "id:202300654_1",
     "id:202300746_4",
     "id:202300756_1",
     "id:202300782_1",
@@ -336,6 +337,15 @@
       "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-08&pageIndex=11&examMgmtNo=202300319&emOpenSeq=1",
       "status": "notified_or_baseline",
       "recorded_at": "2026-05-08 backfill after bulk recovery"
+    },
+    "id:202300654_1": {
+      "id": "202300654_1",
+      "key": "id:202300654_1",
+      "title": "청운 제재관련 공시",
+      "date": "2026.05.21",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-27&pageIndex=1&examMgmtNo=202300654&emOpenSeq=1",
+      "status": "notified",
+      "recorded_at": "2026-05-27 12:55:18"
     },
     "id:202300746_4": {
       "id": "202300746_4",
@@ -1554,5 +1564,5 @@
     }
   },
   "latest_notice_date": "2026.05.21",
-  "saved_at": "2026-05-27 09:54:40"
+  "saved_at": "2026-05-27 12:55:18"
 }
