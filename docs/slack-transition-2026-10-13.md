@@ -1,5 +1,17 @@
 # Slack 전환 준비 및 남은 승인
 
+## 현재 검증 완료 상태 (2026-10-13 08:12 UTC 이후)
+
+- 사용자가 직접 Slack 설치와 GitHub secret 등록을 완료했다. `SLACK_WEBHOOK_URL` 이름/수정일만 읽어 등록을 확인했고 비밀값은 읽거나 출력하지 않았다.
+- 복구 코드 커밋 `6db4630`을 승인된 main에 반영했다.
+- 시험 전용 Actions [38367378134](https://github.com/coolpint/fss-monitor/actions/runs/38367378134)이 성공했다. 생성 08:09:39 UTC, 발송 08:09:50 UTC (17:09:50 KST). 실제 #fss-monitor 메시지 ts `1791878990.538019`를 Slack 읽기 도구로 확인했다. 문구: `[fss-monitor 연결 확인 run 38367378134] GitHub Actions → #fss-monitor 시험 알림입니다. 과거 공시는 발송하지 않았습니다.`
+- 정기 재활성화는 하지 않는다. GitHub가 workflow 파일 반영 직후 기존 두 workflow를 자동 active로 바꿔 다시 disabled_manually로 중지했다. 모든 정기 실행에는 `FSS_MONITOR_ENABLED == 'true'` job 조건이 있으며 해당 Actions variable은 없다. 실제 최근 실행 목록에는 시험 1건 외 추가 실행이 없다.
+- 수신 확인 뒤 공개 목록을 새로 수집했다. 목록 278 / 후보 113 / 생략 108 / 미전송 유지 5건이며 최신5 목록은 아래 표와 동일했다.
+- 적용 감사/백업 디렉터리: `recovery-preparation/20261013T081201006097Z/`. 이전 seen 키 165개와 기존 메타데이터를 보존하고 사용자 생략 108개를 추가해 273개가 되었다. 생략 status는 `skipped_by_user`이며 실제 알림 성공으로 표시하지 않는다. 감사 파일에는 applied=true 및 시험 run/채널/메시지 ts, 원본·적용 SHA256을 남겼다. 알림은 시험 1건만 발송했다.
+- 저장소 state 반영은 별도 승인된 후속 커밋으로 진행한다. `--test-alert-only`는 상태/수집을 건드리지 않는다. 로컬 테스트 28개 통과.
+
+운영 재개에 필요한 별도 승인 후 단계: 먼저 최신 pending과 정상 Slack 연결을 확인한 뒤 Actions variable `FSS_MONITOR_ENABLED`를 `true`로 설정하고 monitor.yml 및 weekly-health-check.yml을 enable한다. 기존 미전송 5건과 이후 새 후보는 정상 monitor 실행에서 전송 대상이다. 정기 재개 이전에는 variable과 enable을 수행하지 않는다.
+
 ## 연결 승인 후 진행 상태
 
 - 사용자 승인을 받아 Silverlining Solutions에 빈 전용 앱 `fss-monitor` (`A0C8B5ZMQF9`)를 생성하고 Incoming Webhooks를 활성화했다.
