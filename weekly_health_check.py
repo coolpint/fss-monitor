@@ -4,7 +4,7 @@
 하는 일:
   1. 최근 7일간 GitHub Actions monitor.yml 실행 이력을 확인
   2. 스케줄 실행 누락/실패 여부를 점검
-  3. 결과를 Telegram으로 전송
+  3. 결과를 Slack으로 전송
      - 정상이어도 "정상 작동 중" 메시지를 보냄
 """
 
@@ -13,10 +13,13 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
+from pathlib import Path
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 
 import requests
+from slack_notifications import TARGET_SLACK_CHANNEL_ID, send_slack_message
 
 
 UTC = timezone.utc
@@ -24,7 +27,7 @@ KST = timezone(timedelta(hours=9))
 GITHUB_API_BASE = "https://api.github.com"
 DEFAULT_LOOKBACK_DAYS = 7
 DEFAULT_MONITOR_WORKFLOW = "monitor.yml"
-DEFAULT_MONITOR_UTC_SLOTS = "17:00"
+DEFAULT_MONITOR_UTC_SLOTS = ",".join(f"{hour:02d}:00" for hour in range(24))
 DEFAULT_WINDOW_ANCHOR_UTC = "FRI@06:45"
 WEEKDAY_NAMES = {
     "MON": 0,
@@ -49,7 +52,36 @@ def request_with_retry(method: str, url: str, **kwargs) -> requests.Response:
             if attempt < 2:
                 continue
 
-    raise RuntimeError(f"HTTP 요청 실패: {last_error}")
+    raise RuntimeError("HTTP 요청 실패 (연결 오류)") from None
+
+
+def configured_schedule_slots(workflow_file):
+    """현재 저장소의 매시간/매일 cron에서 점검 슬롯을 얻는다."""
+    source = (Path(__file__).parent / ".github" / "workflows" / workflow_file).read_text(encoding="utf-8")
+    crons = re.findall(r"cron:\s*['\"]([^'\"]+)['\"]", source)
+    slots = set()
+    for cron in crons:
+        minute, hour, day, month, weekday = cron.split()
+        if (day, month, weekday) != ("*", "*", "*") or not minute.isdigit():
+            raise ValueError("지원하지 않는 cron: --schedule-slots-utc로 점검 슬롯을 명시하세요.")
+        hours = range(24) if hour == "*" else [int(value) for value in hour.split(",")]
+        for value in hours:
+            if not 0 <= value < 24 or not 0 <= int(minute) < 60:
+                raise ValueError("잘못된 cron 시간")
+            slots.add(f"{value:02d}:{int(minute):02d}")
+    if not slots:
+        raise ValueError("점검할 workflow schedule이 없습니다.")
+    return ",".join(sorted(slots))
+
+
+def fetch_workflow_state(repository, workflow_file, github_token):
+    headers = {"Accept": "application/vnd.github+json"}
+    if github_token:
+        headers["Authorization"] = f"Bearer {github_token}"
+    response = request_with_retry("GET", f"{GITHUB_API_BASE}/repos/{repository}/actions/workflows/{workflow_file}", headers=headers)
+    if response.status_code != 200:
+        raise RuntimeError(f"workflow 상태 조회 실패: HTTP {response.status_code}")
+    return response.json().get("state", "unknown")
 
 
 def parse_iso_datetime(value: str) -> datetime:
@@ -127,7 +159,7 @@ def count_expected_runs(window_start: datetime, window_end: datetime, slots_utc:
                 minute,
                 tzinfo=UTC,
             )
-            if window_start <= slot <= window_end:
+            if window_start < slot <= window_end:
                 count += 1
         current_day += timedelta(days=1)
 
@@ -148,6 +180,9 @@ class WeeklyHealthSummary:
     last_success_at: datetime | None
     detail_lines: list[str]
     actions_url: str
+    workflow_state: str = "unknown"
+    last_collection_success_at: str | None = None
+    last_notification_success_at: str | None = None
 
 
 def fetch_workflow_runs(
@@ -174,7 +209,7 @@ def fetch_workflow_runs(
         resp = request_with_retry("GET", url, headers=headers, timeout=30)
         if resp.status_code != 200:
             raise RuntimeError(
-                f"GitHub Actions 조회 실패: HTTP {resp.status_code} {resp.text[:300]}"
+                f"GitHub Actions 조회 실패: HTTP {resp.status_code}"
             )
 
         payload = resp.json()
@@ -200,7 +235,7 @@ def build_summary(
     now_utc = datetime.now(UTC)
     window_end = resolve_window_end(now_utc, window_anchor_utc_raw)
     window_start = window_end - timedelta(days=lookback_days)
-    slots_utc = parse_slots_utc(slots_utc_raw)
+    slots_utc = parse_slots_utc(slots_utc_raw or configured_schedule_slots(workflow_file))
     expected_runs = count_expected_runs(window_start, window_end, slots_utc)
 
     workflow_runs = fetch_workflow_runs(repository, workflow_file, branch, github_token)
@@ -240,6 +275,22 @@ def build_summary(
         blocking_other_runs.append(run)
 
     detail_lines = []
+    workflow_state = fetch_workflow_state(repository, workflow_file, github_token)
+    if workflow_state != "active":
+        detail_lines.append(f"워크플로 상태: {workflow_state}")
+
+    health_path = Path(__file__).parent / "monitor_health.json"
+    health = json.loads(health_path.read_text(encoding="utf-8")) if health_path.exists() else {}
+    last_collection = health.get("last_collection_success_at")
+    last_notification = health.get("last_notification_success_at")
+    if not last_collection:
+        detail_lines.append("실제 수집 성공 기록이 없습니다 (이전 실행의 성공 배지는 수집/전송 성공 증거가 아닙니다).")
+    elif now_utc - parse_iso_datetime(last_collection) > timedelta(hours=3):
+        detail_lines.append("실제 수집 성공 시각이 3시간 이상 지났습니다.")
+    if health.get("outcome") not in ("success", "baseline"):
+        detail_lines.append(f"최근 모니터 결과: {health.get('outcome', 'unknown')}")
+    if health.get("failed", 0):
+        detail_lines.append(f"최근 알림 실패: {health['failed']}건")
 
     if not scheduled_runs:
         detail_lines.append("최근 1주간 scheduled 실행 이력이 없습니다.")
@@ -277,11 +328,16 @@ def build_summary(
         last_success_at=last_success_at,
         detail_lines=detail_lines,
         actions_url=actions_url,
+        workflow_state=workflow_state,
+        last_collection_success_at=last_collection,
+        last_notification_success_at=last_notification,
     )
 
 
 def format_weekly_summary_text(summary: WeeklyHealthSummary) -> str:
     status_text = "정상 작동 중" if summary.healthy else "점검 필요"
+    if summary.healthy and not summary.last_notification_success_at:
+        status_text += " (수집 기준; 실제 알림 성공 이력 확인 불가)"
     lines = [
         "금감원 징계공시 모니터 주간 점검",
         f"상태: {status_text}",
@@ -292,6 +348,9 @@ def format_weekly_summary_text(summary: WeeklyHealthSummary) -> str:
         f"실패: {summary.failed_runs}",
         f"기타: {summary.other_runs}",
         f"마지막 성공 실행: {format_kst(summary.last_success_at) if summary.last_success_at else '-'}",
+        f"워크플로 상태: {summary.workflow_state}",
+        f"실제 마지막 수집 성공(UTC): {summary.last_collection_success_at or '확인 불가'}",
+        f"실제 마지막 알림 성공(UTC): {summary.last_notification_success_at or '확인 불가'}",
     ]
     if summary.detail_lines:
         lines.append("")
@@ -304,60 +363,9 @@ def format_weekly_summary_text(summary: WeeklyHealthSummary) -> str:
     return "\n".join(lines)
 
 
-def send_telegram_weekly_summary(summary: WeeklyHealthSummary, bot_token: str, chat_id: str) -> None:
-    if not bot_token or not chat_id:
-        raise RuntimeError("TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID가 설정되지 않았습니다.")
-
-    resp = request_with_retry(
-        "POST",
-        f"https://api.telegram.org/bot{bot_token}/sendMessage",
-        json={
-            "chat_id": chat_id,
-            "text": format_weekly_summary_text(summary),
-            "disable_web_page_preview": False,
-        },
-        timeout=20,
-    )
-    if resp.status_code != 200:
-        raise RuntimeError(f"Telegram 전송 실패: HTTP {resp.status_code} {resp.text[:300]}")
-
-
-def send_teams_weekly_summary(summary: WeeklyHealthSummary, webhook_url: str) -> None:
-    if not webhook_url:
-        raise RuntimeError("TEAMS_WEBHOOK_URL이 설정되지 않았습니다.")
-
-    text = format_weekly_summary_text(summary)
-    resp = request_with_retry(
-        "POST",
-        webhook_url,
-        json={
-            "@type": "MessageCard",
-            "@context": "http://schema.org/extensions",
-            "summary": "금감원 징계공시 모니터 주간 점검",
-            "sections": [{
-                "text": text.replace("\n", "<br>"),
-                "markdown": True,
-            }],
-        },
-        timeout=20,
-    )
-    if resp.status_code not in (200, 202):
-        raise RuntimeError(f"Teams Webhook 전송 실패: HTTP {resp.status_code} {resp.text[:300]}")
-
-
-def send_weekly_summary(
-    summary: WeeklyHealthSummary,
-    telegram_bot_token: str,
-    telegram_chat_id: str,
-    teams_webhook_url: str,
-) -> None:
-    if telegram_bot_token and telegram_chat_id:
-        send_telegram_weekly_summary(summary, telegram_bot_token, telegram_chat_id)
-        return
-    if teams_webhook_url:
-        send_teams_weekly_summary(summary, teams_webhook_url)
-        return
-    raise RuntimeError("Telegram 또는 Teams 알림 설정이 없습니다.")
+def send_weekly_summary(summary: WeeklyHealthSummary, webhook_url: str, channel_id: str) -> None:
+    if not send_slack_message(format_weekly_summary_text(summary), webhook_url, channel_id):
+        raise RuntimeError("Slack 주간 점검 알림 발송 실패")
 
 
 def parse_args() -> argparse.Namespace:
@@ -366,22 +374,21 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--branch", default=os.getenv("GITHUB_REF_NAME", "main"))
     parser.add_argument("--workflow-file", default=DEFAULT_MONITOR_WORKFLOW)
     parser.add_argument("--lookback-days", type=int, default=DEFAULT_LOOKBACK_DAYS)
-    parser.add_argument("--schedule-slots-utc", default=DEFAULT_MONITOR_UTC_SLOTS)
+    parser.add_argument("--schedule-slots-utc", default="", help="기본값: 현재 workflow cron에서 추출")
     parser.add_argument(
         "--window-anchor-utc",
         default=DEFAULT_WINDOW_ANCHOR_UTC,
         help="주간 점검 기준 시각(예: FRI@06:45). 비우면 현재 시각 기준",
     )
-    parser.add_argument("--print-only", action="store_true", help="Telegram 전송 없이 결과만 출력")
+    parser.add_argument("--print-only", action="store_true", help="Slack 전송 없이 결과만 출력")
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
     github_token = os.getenv("GITHUB_TOKEN", "")
-    telegram_bot_token = os.getenv("TELEGRAM_BOT_TOKEN", "")
-    telegram_chat_id = os.getenv("TELEGRAM_CHAT_ID", "")
-    teams_webhook_url = os.getenv("TEAMS_WEBHOOK_URL", "")
+    slack_webhook_url = os.getenv("SLACK_WEBHOOK_URL", "")
+    slack_channel_id = os.getenv("SLACK_CHANNEL_ID", TARGET_SLACK_CHANNEL_ID)
 
     if not args.repository:
         raise RuntimeError("GITHUB_REPOSITORY 또는 --repository가 필요합니다.")
@@ -409,10 +416,15 @@ def main() -> None:
         "last_success_at": summary.last_success_at.isoformat() if summary.last_success_at else None,
         "detail_lines": summary.detail_lines,
         "actions_url": summary.actions_url,
+        "workflow_state": summary.workflow_state,
+        "last_collection_success_at": summary.last_collection_success_at,
+        "last_notification_success_at": summary.last_notification_success_at,
     }, ensure_ascii=False, indent=2))
 
     if not args.print_only:
-        send_weekly_summary(summary, telegram_bot_token, telegram_chat_id, teams_webhook_url)
+        send_weekly_summary(summary, slack_webhook_url, slack_channel_id)
+    if not summary.healthy:
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

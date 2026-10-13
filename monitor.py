@@ -4,7 +4,7 @@
 하는 일:
   1. 금감원 징계공시 페이지에 새 글이 올라왔는지 확인
   2. 새 글이 있으면 PDF 다운로드
-  3. Telegram으로 알림 전송
+  3. Slack으로 알림 전송
 
 사용법:
   python monitor.py                  ← 1회 실행
@@ -14,8 +14,8 @@
   python monitor.py --reset
 
 기본 동작:
-  - 신규 공시가 있으면 Telegram으로 "링크만" 전송
-  - PDF 다운로드는 ALERT_LINK_ONLY=0 일 때 수행하고 Telegram으로 저장 정보를 전송
+  - 신규 공시가 있으면 Slack으로 "링크만" 전송
+  - PDF 다운로드는 ALERT_LINK_ONLY=0 일 때 수행하고 Slack으로 저장 정보를 전송
 """
 
 import argparse
@@ -28,22 +28,22 @@ import shutil
 import subprocess
 import sys
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Optional
 from urllib.parse import parse_qsl, quote, unquote, urlencode, urljoin, urlparse, urlunparse
 
 import requests
+from slack_notifications import TARGET_SLACK_CHANNEL_ID, send_slack_message
 from bs4 import BeautifulSoup
 
 # ============================================================
 # 설정
 # ============================================================
 
-# Telegram Bot 설정은 환경변수/Actions secret으로만 주입한다.
-TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
-TEAMS_WEBHOOK_URL = os.getenv("TEAMS_WEBHOOK_URL", "")
+# Slack 인증은 기존 승인된 환경변수/Actions secret으로만 주입한다.
+SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL", "")
+SLACK_CHANNEL_ID = os.getenv("SLACK_CHANNEL_ID", TARGET_SLACK_CHANNEL_ID)
 
 
 # PDF 저장 폴더
@@ -252,14 +252,15 @@ def load_state_payload() -> dict:
     try:
         data = json.loads(SEEN_FILE.read_text(encoding="utf-8"))
     except Exception:
-        print("⚠ seen.json 읽기 실패: 기록을 비우고 계속 진행합니다.")
-        return {}
+        raise RuntimeError("seen.json 읽기 실패: 기존 기록을 보존하고 실행을 중단합니다.") from None
 
     if isinstance(data, dict):
+        if not isinstance(data.get("seen_keys"), list):
+            raise RuntimeError("seen_keys 형식 오류: 기존 기록을 보존하고 실행을 중단합니다.")
         return data
     if isinstance(data, list):
         return {"seen_keys": [str(x) for x in data]}
-    return {}
+    raise RuntimeError("seen.json 형식 오류: 기존 기록을 보존하고 실행을 중단합니다.")
 
 
 def load_state() -> tuple[set[str], str]:
@@ -273,7 +274,7 @@ def load_state() -> tuple[set[str], str]:
     if isinstance(seen, list):
         return set(str(x) for x in seen), latest_notice_date
 
-    return set(), ""
+    raise RuntimeError("seen_keys 형식 오류: 기존 기록을 보존하고 실행을 중단합니다.")
 
 
 def notice_record(item: dict, status: str, recorded_at: str) -> dict:
@@ -308,7 +309,9 @@ def save_state(seen: set[str], latest_notice_date: str, seen_items: dict = None)
         "latest_notice_date": normalize_date(latest_notice_date),
         "saved_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     }
-    SEEN_FILE.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    temporary = SEEN_FILE.with_suffix(".json.tmp")
+    temporary.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    temporary.replace(SEEN_FILE)
 
 
 def load_seen() -> set[str]:
@@ -594,10 +597,10 @@ def download_pdfs(item: dict) -> list[Path]:
 
 
 # ============================================================
-# Telegram 전송
+# Slack 전송
 # ============================================================
 
-def build_telegram_notice_text(item: dict, pdf_paths: Optional[list[Path]] = None) -> str:
+def build_slack_notice_text(item: dict, pdf_paths: Optional[list[Path]] = None) -> str:
     pdf_lines = ""
     if pdf_paths:
         pdf_lines = "\nPDF: " + ", ".join(path.name for path in pdf_paths)
@@ -610,78 +613,71 @@ def build_telegram_notice_text(item: dict, pdf_paths: Optional[list[Path]] = Non
     )
 
 
-def send_telegram_message(text: str) -> bool:
-    if TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID:
-        url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-        resp = request_with_retry(
-            "POST",
-            url,
-            json={
-                "chat_id": TELEGRAM_CHAT_ID,
-                "text": text,
-                "disable_web_page_preview": False,
-            },
-            timeout=10,
-        )
-        if resp.status_code == 200:
-            print("  ✓ Telegram 알림 발송 완료")
-            return True
-        print(f"  ⚠ Telegram 알림 발송 실패: HTTP {resp.status_code} {resp.text[:200]}")
-        return False
-
-    if TEAMS_WEBHOOK_URL:
-        card = {
-            "@type": "MessageCard",
-            "@context": "http://schema.org/extensions",
-            "summary": text.splitlines()[0] if text else "금감원 징계공시 알림",
-            "sections": [{
-                "text": text.replace("\n", "<br>"),
-                "markdown": True,
-            }],
-        }
-        resp = request_with_retry("POST", TEAMS_WEBHOOK_URL, json=card, timeout=10)
-        if resp.status_code in (200, 202):
-            print("  ✓ Teams Webhook 알림 발송 완료")
-            return True
-        print(f"  ⚠ Teams Webhook 알림 발송 실패: HTTP {resp.status_code} {resp.text[:200]}")
-        return False
-
-    print("  ⚠ TELEGRAM 또는 TEAMS 알림 설정이 없습니다 (알림 건너뜀)")
-    return False
+def send_notification_message(text: str) -> bool:
+    return send_slack_message(text, SLACK_WEBHOOK_URL, SLACK_CHANNEL_ID)
 
 
-def send_telegram_link_alert(item: dict) -> bool:
-    """신규 공시 링크를 Telegram으로 전송."""
-    return send_telegram_message(build_telegram_notice_text(item))
+def send_slack_link_alert(item: dict) -> bool:
+    """신규 공시 링크를 Slack으로 전송."""
+    return send_notification_message(build_slack_notice_text(item))
 
 
-def send_telegram_notification(item: dict, pdf_paths: list[Path]) -> bool:
-    """PDF 다운로드 후에도 Telegram으로 공시 링크와 PDF 저장 정보를 알림."""
-    return send_telegram_message(build_telegram_notice_text(item, pdf_paths))
+def send_slack_notification(item: dict, pdf_paths: list[Path]) -> bool:
+    """PDF 다운로드 후에도 Slack으로 공시 링크와 PDF 저장 정보를 알림."""
+    return send_notification_message(build_slack_notice_text(item, pdf_paths))
 
 
 # ============================================================
 # 실행 흐름
 # ============================================================
 
-def run_once() -> int:
-    """1회 실행. 반환값: 신규 처리 건수"""
+class MonitorRunError(RuntimeError):
+    """수집 또는 전송 실패. 알림 비밀값을 포함하지 않는다."""
+
+
+def write_health(**updates):
+    path = SEEN_FILE.with_name("monitor_health.json")
+    previous = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    previous.update(updates)
+    temporary = path.with_suffix(".json.tmp")
+    temporary.write_text(json.dumps(previous, ensure_ascii=False, indent=2), encoding="utf-8")
+    temporary.replace(path)
+
+
+def utc_now_text():
+    return datetime.now(timezone.utc).isoformat()
+
+
+def run_once(dry_run=False) -> int:
+    """성공한 신규 알림 수를 반환하며 수집/전송 실패 시 예외를 발생시킨다."""
     print("=" * 58)
     print(f"금감원 징계공시 모니터링  {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     print("=" * 58)
 
     try:
         items = fetch_list()
-    except Exception as e:
-        print(f"❌ 금감원 사이트 접속 실패: {e}")
-        return 0
+    except Exception:
+        if not dry_run:
+            write_health(last_run_at=utc_now_text(), outcome="collection_failed")
+        raise MonitorRunError("금감원 사이트 수집 실패") from None
 
     if not items:
-        print("⚠ 공시 목록을 파싱하지 못했습니다. 사이트 구조를 확인하세요.")
-        return 0
+        if not dry_run:
+            write_health(last_run_at=utc_now_text(), outcome="parse_failed")
+        raise MonitorRunError("공시 목록 파싱 실패")
 
     first_run = not SEEN_FILE.exists()
     seen, latest_notice_date = load_state()
+
+    if dry_run:
+        pending = [i for i in items if i["key"] not in seen]
+        print(json.dumps({"dry_run": True, "first_run": first_run,
+                          "collected": len(items), "pending": len(pending),
+                          "pending_items": pending}, ensure_ascii=False, indent=2))
+        return 0
+
+    write_health(last_run_at=utc_now_text(), last_collection_success_at=utc_now_text(),
+                 outcome="running", collected=len(items), attempted=0, succeeded=0, failed=0)
 
     if first_run:
         baseline = {i["key"] for i in items}
@@ -691,6 +687,7 @@ def run_once() -> int:
         save_state(baseline, latest_notice_date, seen_items)
         print("\n초기 실행: 현재 공시 목록을 기준선으로 저장했습니다.")
         print("다음 실행부터 신규 공시만 알림합니다.")
+        write_health(outcome="baseline")
         return 0
 
     # 구버전 상태파일(최신 공시일 없음) 보정
@@ -702,21 +699,26 @@ def run_once() -> int:
 
     if not new_items:
         print("\n새로운 공시 없음 ✓")
+        write_health(outcome="success")
         return 0
 
     print(f"\n신규 공시 {len(new_items)}건 발견\n")
 
     processed = 0
+    failed = 0
     for item in new_items:
         print(f"[{item.get('date', '-')}] {item['title']}")
 
         delivered = False
-        if ALERT_LINK_ONLY:
-            delivered = send_telegram_link_alert(item)
-        else:
-            pdfs = download_pdfs(item)
-            time.sleep(1)
-            delivered = send_telegram_notification(item, pdfs)
+        try:
+            if ALERT_LINK_ONLY:
+                delivered = send_slack_link_alert(item)
+            else:
+                pdfs = download_pdfs(item)
+                time.sleep(1)
+                delivered = send_slack_notification(item, pdfs)
+        except Exception as exc:
+            print(f"  ⚠ 알림 처리 예외: {type(exc).__name__}")
 
         if delivered:
             item_date = normalize_date(item.get("date", ""))
@@ -727,13 +729,19 @@ def run_once() -> int:
                 latest_notice_date = item_date
             now_text = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             save_state(seen, latest_notice_date, {item["key"]: notice_record(item, "notified", now_text)})
+            processed += 1
+            write_health(last_notification_success_at=utc_now_text())
         else:
+            failed += 1
             print("  ⚠ 알림 전송 실패: seen에 기록하지 않고 다음 실행에 재시도합니다.")
 
-        processed += 1
         print()
 
-    print(f"완료: 신규 {processed}건 처리")
+    write_health(outcome="notification_failed" if failed else "success",
+                 attempted=len(new_items), succeeded=processed, failed=failed)
+    print(f"완료: 알림 시도 {len(new_items)}건 / 성공 {processed}건 / 실패 {failed}건")
+    if failed:
+        raise MonitorRunError(f"알림 {failed}건 실패 (성공 {processed}건)")
     return processed
 
 
@@ -819,8 +827,8 @@ def run_test(check_times: list[str]):
     except Exception as e:
         print(f"  ❌ 접속 실패: {e}")
 
-    print("\n[테스트 2] Telegram 전송 경로...")
-    mode = "Telegram 링크 알림 전용(기본)" if ALERT_LINK_ONLY else "PDF 다운로드 후 Telegram 알림"
+    print("\n[테스트 2] Slack 전송 경로...")
+    mode = "Slack 링크 알림 전용(기본)" if ALERT_LINK_ONLY else "PDF 다운로드 후 Slack 알림"
     print(f"  현재 모드: {mode}")
 
     test_item = {
@@ -833,11 +841,11 @@ def run_test(check_times: list[str]):
 
     try:
         if ALERT_LINK_ONLY:
-            send_telegram_link_alert(test_item)
+            send_slack_link_alert(test_item)
         else:
-            send_telegram_notification(test_item, [])
+            send_slack_notification(test_item, [])
     except Exception as e:
-        print(f"  ⚠ Telegram 테스트 중 오류: {e}")
+        print(f"  ⚠ Slack 테스트 중 오류: {e}")
 
     print("\n[테스트 3] PDF 저장 폴더...")
     PDF_FOLDER.mkdir(exist_ok=True)
@@ -853,7 +861,9 @@ def run_test(check_times: list[str]):
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="금감원 징계공시 모니터링")
     parser.add_argument("--test", action="store_true", help="연결/설정 테스트")
+    parser.add_argument("--test-alert-only", action="store_true", help="시험 알림 1건만 전송; 수집/후보 처리/상태 저장 없음")
     parser.add_argument("--reset", action="store_true", help="seen.json 초기화")
+    parser.add_argument("--dry-run", action="store_true", help="수집/미전송 목록만 출력, 알림 및 상태 저장 없음")
     parser.add_argument("--daemon", action="store_true", help="스케줄 모드로 실행")
     parser.add_argument(
         "--check-times",
@@ -865,6 +875,27 @@ def parse_args() -> argparse.Namespace:
 
 def main():
     args = parse_args()
+
+    if args.test_alert_only:
+        if args.reset or args.test or args.daemon or args.dry_run:
+            print("❌ --test-alert-only는 다른 실행 모드와 함께 사용할 수 없습니다.")
+            sys.exit(1)
+        run_id = os.getenv("GITHUB_RUN_ID", "local")
+        delivered = send_notification_message(f"[fss-monitor 연결 확인 run {run_id}] GitHub Actions → #fss-monitor 시험 알림입니다. 과거 공시는 발송하지 않았습니다.")
+        if not delivered:
+            sys.exit(1)
+        return
+
+    if args.dry_run:
+        if args.reset or args.test or args.daemon:
+            print("❌ --dry-run은 --reset/--test/--daemon과 함께 사용할 수 없습니다.")
+            sys.exit(1)
+        try:
+            run_once(dry_run=True)
+        except Exception as exc:
+            print(f"❌ 실행 실패: {type(exc).__name__}")
+            sys.exit(1)
+        return
 
     if args.reset:
         if SEEN_FILE.exists():
@@ -889,7 +920,11 @@ def main():
             print("\n스케줄 모드를 종료합니다.")
         return
 
-    run_once()
+    try:
+        run_once()
+    except Exception as exc:
+        print(f"❌ 실행 실패: {type(exc).__name__}")
+        sys.exit(1)
 
 
 if __name__ == "__main__":

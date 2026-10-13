@@ -29,7 +29,8 @@
    - 실패한 단계 이후를 무리하게 진행하지 않는다.
    - 재실행 시 같은 공시가 중복 처리되거나 중복 발행되지 않도록 상태를 남긴다.
    - Auto-Writer 인계는 작업 폴더의 `auto_writer_task.md`와 `auto_writer_state.json`을 기준으로 실행하고, 공개 발행/승인 완료는 하지 않는다.
-   - 알림은 Telegram을 우선 사용하되, Telegram secrets가 없는 운영 환경에서는 기존 Teams Webhook fallback으로 전송한다.
+   - 2026-10-13 사용자 지시에 따라 알림은 확인된 #fss-monitor Slack 채널로만 전송한다. Teams/Telegram fallback은 사용하지 않는다.
+   - 새 Slack webhook/token/OAuth 생성이나 기존 인증의 지속 접근 등록은 구체적 사용자 승인 후에만 수행한다.
    - 알림 채널 설정 부재 때문에 새 공시 감지나 주간 점검이 조용히 무력화되지 않게 한다.
 
 6. 사용자 영향이 큰 변화는 먼저 묻는다.

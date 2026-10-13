@@ -11,6 +11,7 @@ permissions:
 
 jobs:
   weekly-health-check:
+    if: ${{ vars.FSS_MONITOR_ENABLED == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -30,7 +31,6 @@ jobs:
       - name: Run weekly health check
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_CHANNEL_ID: "C0C9LQN7A64"  # 확인된 #fss-monitor
         run: python weekly_health_check.py

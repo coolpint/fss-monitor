@@ -18,6 +18,18 @@ def item(item_id, date, title):
 
 
 class MonitorRunOnceTest(unittest.TestCase):
+    def test_alert_only_sends_one_message_without_backlog_or_state(self):
+        with (patch("sys.argv", ["monitor.py", "--test-alert-only"]),
+              patch.object(monitor, "send_notification_message", return_value=True) as send,
+              patch.object(monitor, "fetch_list") as fetch,
+              patch.object(monitor, "save_state") as save,
+              patch.object(monitor, "write_health") as health):
+            monitor.main()
+        send.assert_called_once()
+        fetch.assert_not_called()
+        save.assert_not_called()
+        health.assert_not_called()
+
     def test_fetch_list_scans_multiple_pages(self):
         page_1 = """
         <table><tbody>
@@ -63,22 +75,10 @@ class MonitorRunOnceTest(unittest.TestCase):
 
         self.assertEqual(monitor.parse_list_page(html), [])
 
-    def test_notification_falls_back_to_teams(self):
-        class Response:
-            status_code = 200
-            text = "ok"
-
-        with (
-            patch.object(monitor, "TELEGRAM_BOT_TOKEN", ""),
-            patch.object(monitor, "TELEGRAM_CHAT_ID", ""),
-            patch.object(monitor, "TEAMS_WEBHOOK_URL", "https://teams.example/webhook"),
-            patch.object(monitor, "request_with_retry", return_value=Response()) as request,
-        ):
-            self.assertTrue(monitor.send_telegram_message("금감원 새 징계공시\n본문"))
-
-        request.assert_called_once()
-        _, url = request.call_args.args[:2]
-        self.assertEqual(url, "https://teams.example/webhook")
+    def test_notification_uses_only_slack(self):
+        with patch.object(monitor, "SLACK_WEBHOOK_URL", "https://hooks.slack.com/services/T054M7CUG/BTEST/fakeSecret"), patch.object(monitor, "SLACK_CHANNEL_ID", "C0C9LQN7A64"), patch.object(monitor, "send_slack_message", return_value=True) as send:
+            self.assertTrue(monitor.send_notification_message("공시"))
+        send.assert_called_once_with("공시", "https://hooks.slack.com/services/T054M7CUG/BTEST/fakeSecret", "C0C9LQN7A64")
 
     def test_unseen_older_date_is_alerted(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -98,7 +98,7 @@ class MonitorRunOnceTest(unittest.TestCase):
             with (
                 patch.object(monitor, "SEEN_FILE", seen_file),
                 patch.object(monitor, "fetch_list", return_value=[older_unseen]),
-                patch.object(monitor, "send_telegram_link_alert", return_value=True) as send_alert,
+                patch.object(monitor, "send_slack_link_alert", return_value=True) as send_alert,
             ):
                 processed = monitor.run_once()
 
@@ -128,14 +128,90 @@ class MonitorRunOnceTest(unittest.TestCase):
             with (
                 patch.object(monitor, "SEEN_FILE", seen_file),
                 patch.object(monitor, "fetch_list", return_value=[new_item]),
-                patch.object(monitor, "send_telegram_link_alert", return_value=False),
+                patch.object(monitor, "send_slack_link_alert", return_value=False),
             ):
-                processed = monitor.run_once()
+                with self.assertRaises(monitor.MonitorRunError):
+                    monitor.run_once()
 
-            self.assertEqual(processed, 1)
+            health = json.loads(seen_file.with_name("monitor_health.json").read_text())
+            self.assertEqual((health["attempted"], health["succeeded"], health["failed"]), (1, 0, 1))
+            self.assertNotIn("last_notification_success_at", health)
             saved = json.loads(seen_file.read_text(encoding="utf-8"))
             self.assertNotIn("id:new_item", saved["seen_keys"])
             self.assertEqual(saved["latest_notice_date"], "2026.04.20")
+
+    def test_partial_success_preserves_successful_state_and_reports_failure(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            state = Path(tmp) / "seen.json"
+            state.write_text('{"seen_keys": [], "latest_notice_date": ""}')
+            with (patch.object(monitor, "SEEN_FILE", state),
+                  patch.object(monitor, "fetch_list", return_value=[item("a", "2026.08.21", "a"), item("b", "2026.08.21", "b")]),
+                  patch.object(monitor, "send_slack_link_alert", side_effect=[True, RuntimeError("secret-url")])):
+                with self.assertRaises(monitor.MonitorRunError):
+                    monitor.run_once()
+            self.assertEqual(json.loads(state.read_text())["seen_keys"], ["id:a"])
+            health = json.loads(state.with_name("monitor_health.json").read_text())
+            self.assertEqual((health["succeeded"], health["failed"]), (1, 1))
+            self.assertIn("last_notification_success_at", health)
+            self.assertNotIn("secret-url", json.dumps(health))
+
+    def test_collection_and_empty_parse_fail_without_touching_seen(self):
+        for result in (RuntimeError("secret-url"), []):
+            with tempfile.TemporaryDirectory() as tmp:
+                state = Path(tmp) / "seen.json"
+                original = '{"seen_keys": ["id:old"]}'
+                state.write_text(original)
+                fetch = patch.object(monitor, "fetch_list", side_effect=result) if isinstance(result, Exception) else patch.object(monitor, "fetch_list", return_value=result)
+                with patch.object(monitor, "SEEN_FILE", state), fetch:
+                    with self.assertRaises(monitor.MonitorRunError):
+                        monitor.run_once()
+                self.assertEqual(state.read_text(), original)
+
+    def test_dry_run_does_not_send_or_write(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            state = Path(tmp) / "seen.json"
+            state.write_text('{"seen_keys": []}')
+            original = state.read_bytes()
+            with (patch.object(monitor, "SEEN_FILE", state),
+                  patch.object(monitor, "fetch_list", return_value=[item("a", "2026.08.21", "a")]),
+                  patch.object(monitor, "send_slack_link_alert") as send):
+                monitor.run_once(dry_run=True)
+            send.assert_not_called()
+            self.assertEqual(state.read_bytes(), original)
+            self.assertFalse(state.with_name("monitor_health.json").exists())
+
+    def test_corrupt_state_blocks_delivery(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            state = Path(tmp) / "seen.json"
+            state.write_text('broken')
+            with (patch.object(monitor, "SEEN_FILE", state),
+                  patch.object(monitor, "fetch_list", return_value=[item("a", "2026.08.21", "a")]),
+                  patch.object(monitor, "send_slack_link_alert") as send):
+                with self.assertRaises(RuntimeError):
+                    monitor.run_once()
+            send.assert_not_called()
+            self.assertEqual(state.read_text(), 'broken')
+
+    def test_quiet_run_preserves_last_real_notification_time(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            state = Path(tmp) / "seen.json"
+            state.write_text('{"seen_keys": ["id:a"]}')
+            health_path = state.with_name("monitor_health.json")
+            health_path.write_text('{"last_notification_success_at": "2026-08-21T11:26:00+00:00"}')
+            with (patch.object(monitor, "SEEN_FILE", state),
+                  patch.object(monitor, "fetch_list", return_value=[item("a", "2026.08.21", "a")]),
+                  patch.object(monitor, "send_slack_link_alert") as send):
+                self.assertEqual(monitor.run_once(), 0)
+            send.assert_not_called()
+            health = json.loads(health_path.read_text())
+            self.assertEqual(health["last_notification_success_at"], "2026-08-21T11:26:00+00:00")
+            self.assertEqual(health["outcome"], "success")
+
+    def test_cli_exits_nonzero_on_monitor_failure(self):
+        with patch("sys.argv", ["monitor.py"]), patch.object(monitor, "run_once", side_effect=monitor.MonitorRunError("failed")):
+            with self.assertRaises(SystemExit) as error:
+                monitor.main()
+            self.assertEqual(error.exception.code, 1)
 
 
 if __name__ == "__main__":

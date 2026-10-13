@@ -1,9 +1,11 @@
 # 금감원 징계공시 모니터링
 
+복구 중 정기 발송은 `FSS_MONITOR_ENABLED` Actions variable이 정확히 `true`일 때만 가능합니다. 이 값은 아직 설정하지 않았습니다. `slack-connection-test.yml`은 수동 시험 알림 1건만 보내며 수집/후보/상태 저장을 하지 않습니다. 기존 workflow의 비활성화 상태를 유지한 채 시험할 수 있습니다.
+
 금감원 제재 관련 공시에 새 글이 올라오면:
 
 1. 신규 공시를 감지합니다.
-2. Telegram으로 링크 알림을 보냅니다.
+2. Slack으로 링크 알림을 보냅니다.
 3. 로컬 기사화 파이프라인에서 PDF를 다운로드하고 Auto-Writer로 후속 기사 작성·이미지 생성·moneynlaw 미승인 글 저장 작업을 넘깁니다.
 
 ## 핵심 변경사항
@@ -12,11 +14,11 @@
 - GitHub Actions 확인 주기: 매시간
 - 기본 로컬 확인 시간: `02:00`
 - 기본 목록 스캔 범위: 최근 30페이지(`FSS_MAX_LIST_PAGES=30`)
-- 알림 채널: Telegram
-- 선택 기능: `ALERT_LINK_ONLY=0` 설정 시 PDF 다운로드 후 Telegram으로 저장 정보를 알림
+- 알림 채널: Slack
+- 선택 기능: `ALERT_LINK_ONLY=0` 설정 시 PDF 다운로드 후 Slack으로 저장 정보를 알림
 - PDF 다운로드 이후 기사화 단계: `article_pipeline.py`가 Auto-Writer 입력·실행 인계 파일을 생성
 - 금감원 징계해설 기사에만 별도 만평 이미지 프롬프트를 적용
-- 주간 점검은 기존처럼 매주 금요일 15:45 KST에 실행하되 결과를 Telegram으로 전송
+- 주간 점검은 기존처럼 매주 금요일 15:45 KST에 실행하되 결과를 Slack으로 전송
 
 ## 설치
 
@@ -30,7 +32,8 @@ pip install -r requirements.txt
 python monitor.py
 python monitor.py --daemon
 python monitor.py --check-times 02:00 --daemon
-python monitor.py --test
+python monitor.py --dry-run  # 외부 발송/상태 저장 없음
+# python monitor.py --test  # 실제 시험 발송: 별도 승인 후에만 실행
 python monitor.py --reset
 ```
 
@@ -38,17 +41,16 @@ python monitor.py --reset
 
 GitHub Actions 또는 로컬 환경변수에 아래 값을 설정합니다. 실제 토큰, 채팅 ID, 웹훅은 저장소에 기록하지 않습니다.
 
-기본 우선순위는 Telegram이고, Telegram 설정이 없으면 기존 Teams Webhook으로 대체합니다.
+알림은 확인된 `#fss-monitor` Slack 채널로만 보냅니다. Teams/Telegram fallback은 없습니다.
 
-- `TELEGRAM_BOT_TOKEN`
-- `TELEGRAM_CHAT_ID`
-- `TEAMS_WEBHOOK_URL`
+- `SLACK_WEBHOOK_URL`: #fss-monitor 전용 Incoming Webhook URL (GitHub Actions secret)
+- `SLACK_CHANNEL_ID`: 확인된 채널 `C0C9LQN7A64` (#fss-monitor), workflow에 고정
 
-GitHub Actions에서는 `Settings > Secrets and variables > Actions`에 같은 이름의 secrets로 등록합니다.
+GitHub Actions에서는 `Settings > Secrets and variables > Actions`를 사용합니다. 새 Incoming Webhook 생성/설치 승인과 GitHub의 지속 접근 secret 등록 전에 구체 승인이 필요합니다. 연결된 Slack 커넥터 발송 성공은 Actions의 webhook 발송 검증을 대신하지 않습니다.
 
 ## 로컬 기사화 파이프라인
 
-Telegram 링크 알림 이후의 후속 작업(PDF 다운로드, PDF 텍스트 추출, Auto-Writer 입력 파일 생성, Auto-Writer 실행 인계)은 로컬 Mac에서 `article_pipeline.py`로 실행합니다.
+Slack 링크 알림 이후의 후속 작업(PDF 다운로드, PDF 텍스트 추출, Auto-Writer 입력 파일 생성, Auto-Writer 실행 인계)은 로컬 Mac에서 `article_pipeline.py`로 실행합니다.
 
 ```bash
 python article_pipeline.py --latest
@@ -80,7 +82,7 @@ python article_pipeline.py --daemon
 
 주의:
 
-- 로그인 정보, 쿠키, API 키, 웹훅, Telegram 토큰은 저장소에 저장하지 마세요.
+- 로그인 정보, 쿠키, API 키, 웹훅, Slack 토큰은 저장소에 저장하지 마세요.
 - 현재 파이프라인은 공개 발행하지 않고, Auto-Writer가 moneynlaw 미승인/검토 대기 글까지 만드는 것을 목표로 합니다.
 - 공개 발행, 승인 완료, 예약 발행, 기존 공개 기사 수정, 삭제는 별도 사용자 승인 없이는 하지 않습니다.
 
@@ -116,18 +118,22 @@ python monitor.py
 
 - `.github/workflows/monitor.yml` 기준으로 매시간 실행됩니다.
 - GitHub Actions는 원격 저장소(`origin/main`)의 코드를 실행하므로, 로컬 수정 후 반드시 `git push`까지 해야 반영됩니다.
-- GitHub secrets에 `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`를 등록하세요. 아직 Telegram을 쓰지 않으면 기존 `TEAMS_WEBHOOK_URL`로 대체 전송됩니다.
+- 승인 후 `SLACK_WEBHOOK_URL` secret을 설정하고 확인된 채널 `C0C9LQN7A64`에 대한 Actions의 실제 발송 경로를 검증합니다.
 - 대량 게시가 있을 수 있으므로 기본적으로 금감원 목록 30페이지를 훑습니다. 필요하면 `FSS_MAX_LIST_PAGES` 환경변수로 늘릴 수 있습니다.
 
 ### 방법 D: 주간 상태 점검
 
 - `.github/workflows/weekly-health-check.yml` 기준으로 매주 금요일 `15:45`(KST)에 실행됩니다.
-- 최근 7일간 `monitor.yml` scheduled 실행 이력을 점검하고, 이상이 없어도 Telegram 또는 Teams로 `정상 작동 중` 메시지를 보냅니다.
+- 최근 7일간 `monitor.yml` scheduled 실행 이력을 점검하고, 이상이 없어도 Slack로 `정상 작동 중` 메시지를 보냅니다.
 - 점검 기간은 실제 워크플로 시작 시각이 아니라 주간 점검의 예정 시각(`금요일 15:45 KST`)에 고정해 계산합니다.
-- 실패, 실행 누락, 미완료 run이 있으면 Telegram 또는 Teams에 `점검 필요` 상태로 요약을 보냅니다.
+- 실패, 실행 누락, 미완료 run이 있으면 Slack에 `점검 필요` 상태로 요약을 보냅니다.
 
 ## 주의
 
 - `--reset` 실행 시 기존 기록(`seen.json`)이 초기화되어 이미 있던 공시도 다시 신규로 처리됩니다.
 - 첫 실행은 현재 공시 목록을 기준선으로 저장하고 알림을 보내지 않습니다. 다음 실행부터 신규만 알림합니다.
-- 처음 설정 후에는 `python monitor.py --test`로 연결/설정을 먼저 확인하세요.
+- 처음 설정 후에는 `python monitor.py --dry-run  # 외부 발송/상태 저장 없음
+# python monitor.py --test  # 실제 시험 발송: 별도 승인 후에만 실행`로 연결/설정을 먼저 확인하세요.
+
+
+Incoming Webhook은 생성할 때 #fss-monitor 채널을 선택해야 합니다. webhook URL 자체가 비밀값이므로 대화에 붙여넣거나 저장소에 커밋하지 마세요. 승인 후 사용자가 GitHub Settings → Secrets and variables → Actions → New repository secret에서 이름 SLACK_WEBHOOK_URL로 직접 입력합니다. bot token/chat:write/메시지 읽기 권한은 이 모니터에 필요하지 않습니다. URL만으로 채널을 확인할 수 없으므로 생성 화면의 대상과 승인된 Actions 시험 알림 1건의 실제 수신을 확인해야 합니다.
