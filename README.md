@@ -1,6 +1,6 @@
 # 금감원 징계공시 모니터링
 
-복구 중 정기 발송은 `FSS_MONITOR_ENABLED` Actions variable이 정확히 `true`일 때만 가능합니다. 이 값은 아직 설정하지 않았습니다. `slack-connection-test.yml`은 수동 시험 알림 1건만 보내며 수집/후보/상태 저장을 하지 않습니다. 기존 workflow의 비활성화 상태를 유지한 채 시험할 수 있습니다.
+2026-10-15 사용자 승인으로 운영을 재개했습니다. `FSS_MONITOR_ENABLED=true`이며 두 정기 workflow는 활성 상태입니다. 남은 6건의 Slack 실수신과 상태 저장을 검증했습니다. [운영 재개 기록](docs/operations-resume-2026-10-15.md)을 참고하세요. `slack-connection-test.yml`은 수동 시험 알림 1건만 보내며 수집/후보/상태 저장을 하지 않습니다.
 
 금감원 제재 관련 공시에 새 글이 올라오면:
 

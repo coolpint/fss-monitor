@@ -1,5 +1,13 @@
 # fss-monitor Plan
 
+## 현재 운영 상태 — 2026-10-15
+
+- 사용자 승인으로 남은6건을 #fss-monitor로 발송하고 정기 운영을 재개했다. FSS_MONITOR_ENABLED=true, monitor/weekly-health-check 모두 active이다.
+- 실제 실행 38658260475 성공 및 Slack 6건 개별 수신을 확인했다. Actions 커밋 7151407에 6건 notified와 운영 상태(시도6/성공6/실패0)가 저장됐다. 과거 생략108건과 이전 메타데이터를 보존했다.
+- 운영 재개는 기존 인증/목적지/스케줄을 사용하며 새 credential/권한이나 Teams 발송은 없다. 수동 실행은 한 번뿐이다.
+- 다음 수집 예약은 10/15 10:00 KST, 주간 점검은 10/16 15:45 KST이다. 첫 주간 점검은 이전 중지 기간도 포함한다.
+- 작업/변경/검증 상세와 Slack TS는 docs/operations-resume-2026-10-15.md에 기록했다. 아래 과거 복구/보류 기록은 시점별 이력이다.
+
 2026-10-13 08:12 UTC 복구 검증: 사용자 직접 SLACK_WEBHOOK_URL 등록 완료 후 main 코드 커밋 6db4630 반영 및 시험 run 38367378134의 Slack 실수신(메시지 ts 1791878990.538019) 확인 완료. 최신 수집 후보 113건 중 108건을 skipped_by_user로 적용하고 최신5건은 미전송 유지했다. 원본/준비/적용본과 감사 기록은 recovery-preparation/20261013T081201006097Z/에 보존한다. GitHub가 파일 반영 시 자동 활성화한 정기 두 workflow는 disabled_manually로 다시 중지했고 FSS_MONITOR_ENABLED variable은 미설정이다. 정기 재활성화는 별도 승인 전 보류한다.
 
 2026-10-13 연결 후속 진행: 사용자 승인으로 전용 Slack 앱 A0C8B5ZMQF9 생성 및 Incoming Webhooks 활성화 완료. 새 명시적 약관이 표시된 OAuth 허용 단계와 GitHub 사용자 직접 로그인/secret 입력에서 인계 대기 중이다. 비밀 URL 생성/등록/발송/원격 반영/seen 적용은 아직 하지 않았다. 시험 전용 실행은 수집/후보/상태 저장 없이 알림 1건만 보내도록 준비했다.
