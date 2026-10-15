@@ -2,7 +2,7 @@ name: 금감원 징계공시 모니터링
 
 on:
   schedule:
-    - cron: '0 * * * *'   # 매시간 실행해 금감원 대량/수시 게시 지연을 줄임
+    - cron: '7 * * * *'   # 매시간 실행해 금감원 대량/수시 게시 지연을 줄임
   workflow_dispatch:      # 수동 실행 가능
     inputs:
       test_only:
