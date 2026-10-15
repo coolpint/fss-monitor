@@ -11,7 +11,7 @@
 ## 핵심 변경사항
 
 - 신규 공시 파싱 로직 강화(누락 방지)
-- GitHub Actions 확인 주기: 매시간
+- GitHub Actions 확인 시각: 매일 06:06·10:07·14:07·18:07 KST (하루 4회)
 - 기본 로컬 확인 시간: `02:00`
 - 기본 목록 스캔 범위: 최근 30페이지(`FSS_MAX_LIST_PAGES=30`)
 - 알림 채널: Slack
@@ -116,7 +116,7 @@ python monitor.py
 
 ### 방법 C: GitHub Actions로 실행
 
-- `.github/workflows/monitor.yml` 기준으로 매시간 실행됩니다.
+- `.github/workflows/monitor.yml` 기준으로 매일 06:06·10:07·14:07·18:07 KST에 실행됩니다. UTC cron은 `6 21 * * *`와 `7 1,5,9 * * *`입니다.
 - GitHub Actions는 원격 저장소(`origin/main`)의 코드를 실행하므로, 로컬 수정 후 반드시 `git push`까지 해야 반영됩니다.
 - 승인 후 `SLACK_WEBHOOK_URL` secret을 설정하고 확인된 채널 `C0C9LQN7A64`에 대한 Actions의 실제 발송 경로를 검증합니다.
 - 대량 게시가 있을 수 있으므로 기본적으로 금감원 목록 30페이지를 훑습니다. 필요하면 `FSS_MAX_LIST_PAGES` 환경변수로 늘릴 수 있습니다.

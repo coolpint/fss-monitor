@@ -8,12 +8,17 @@ import weekly_health_check
 
 
 class WeeklyHealthTelegramTest(unittest.TestCase):
-    def test_current_hourly_cron_expects_168_runs(self):
+    def test_current_four_daily_cron_matches_kst_and_expects_28_runs(self):
         slots = weekly_health_check.parse_slots_utc(weekly_health_check.configured_schedule_slots("monitor.yml"))
+        self.assertEqual(slots, [(1, 7), (5, 7), (9, 7), (21, 6)])
+        kst = timezone(timedelta(hours=9))
+        converted = [datetime(2026, 10, 15, h, m, tzinfo=timezone.utc).astimezone(kst) for h, m in slots]
+        self.assertEqual([d.strftime("%Y-%m-%d %H:%M") for d in converted],
+                         ["2026-10-15 10:07", "2026-10-15 14:07", "2026-10-15 18:07", "2026-10-16 06:06"])
         start = datetime(2026, 8, 21, 6, 45, tzinfo=timezone.utc)
-        self.assertEqual(weekly_health_check.count_expected_runs(start, start + timedelta(days=7), slots), 168)
-        boundary = start.replace(minute=0)
-        self.assertEqual(weekly_health_check.count_expected_runs(boundary, boundary + timedelta(days=7), slots), 168)
+        self.assertEqual(weekly_health_check.count_expected_runs(start, start + timedelta(days=7), slots), 28)
+        boundary = start.replace(hour=1, minute=7)
+        self.assertEqual(weekly_health_check.count_expected_runs(boundary, boundary + timedelta(days=7), slots), 28)
 
     def test_disabled_workflow_and_unproven_success_are_unhealthy(self):
         with (patch.object(weekly_health_check, "fetch_workflow_runs", return_value=[]),
