@@ -4,6 +4,7 @@
     "id:202000487_1",
     "id:202100623_2",
     "id:202200127_4",
+    "id:202200142_1",
     "id:202200253_1",
     "id:202200254_1",
     "id:202200255_1",
@@ -70,10 +71,12 @@
     "id:202400130_1",
     "id:202400136_1",
     "id:202400137_1",
+    "id:202400144_2",
     "id:202400207_1",
     "id:202400233_2",
     "id:202400272_1",
     "id:202400273_1",
+    "id:202400328_1",
     "id:202400333_2",
     "id:202400337_1",
     "id:202400337_3",
@@ -156,6 +159,7 @@
     "id:202500193_1",
     "id:202500194_1",
     "id:202500195_1",
+    "id:202500199_5",
     "id:202500225_1",
     "id:202500229_1",
     "id:202500230_1",
@@ -233,10 +237,13 @@
     "id:202500578_1",
     "id:202500579_1",
     "id:202500587_1",
+    "id:202500607_1",
     "id:202500608_1",
     "id:202500609_1",
+    "id:202500610_1",
     "id:202500611_1",
     "id:202500612_1",
+    "id:202500614_1",
     "id:202500615_1",
     "id:202500616_1",
     "id:202500617_1",
@@ -294,6 +301,7 @@
     "id:202500786_1",
     "id:202500787_1",
     "id:202500806_1",
+    "id:202600039_1",
     "id:202600095_1",
     "id:202600179_2"
   ],
@@ -333,6 +341,15 @@
       "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-10-13&pageIndex=2&examMgmtNo=202200127&emOpenSeq=4",
       "status": "skipped_by_user",
       "recorded_at": "2026-10-13T08:12:01.006097+00:00"
+    },
+    "id:202200142_1": {
+      "id": "202200142_1",
+      "key": "id:202200142_1",
+      "title": "태성자산운용 주식회사 제재관련 공시",
+      "date": "2026.10.27",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-10-31&pageIndex=1&examMgmtNo=202200142&emOpenSeq=1",
+      "status": "notified",
+      "recorded_at": "2026-10-30 16:15:48"
     },
     "id:202200253_1": {
       "id": "202200253_1",
@@ -928,6 +945,15 @@
       "status": "notified_or_baseline",
       "recorded_at": "2026-05-08 backfill after bulk recovery"
     },
+    "id:202400144_2": {
+      "id": "202400144_2",
+      "key": "id:202400144_2",
+      "title": "DB손해보험주식회사 제재관련 공시",
+      "date": "2026.10.26",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-10-31&pageIndex=1&examMgmtNo=202400144&emOpenSeq=2",
+      "status": "notified",
+      "recorded_at": "2026-10-30 16:15:48"
+    },
     "id:202400207_1": {
       "id": "202400207_1",
       "key": "id:202400207_1",
@@ -963,6 +989,15 @@
       "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-10-13&pageIndex=3&examMgmtNo=202400273&emOpenSeq=1",
       "status": "skipped_by_user",
       "recorded_at": "2026-10-13T08:12:01.006097+00:00"
+    },
+    "id:202400328_1": {
+      "id": "202400328_1",
+      "key": "id:202400328_1",
+      "title": "태성자산운용 주식회사 제재관련 공시",
+      "date": "2026.10.27",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-10-31&pageIndex=1&examMgmtNo=202400328&emOpenSeq=1",
+      "status": "notified",
+      "recorded_at": "2026-10-30 16:15:48"
     },
     "id:202400333_2": {
       "id": "202400333_2",
@@ -1702,6 +1737,15 @@
       "status": "notified_or_baseline",
       "recorded_at": "2026-05-08 backfill after bulk recovery"
     },
+    "id:202500199_5": {
+      "id": "202500199_5",
+      "key": "id:202500199_5",
+      "title": "농협은행주식회사 제재관련 공시",
+      "date": "2026.10.26",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-10-31&pageIndex=1&examMgmtNo=202500199&emOpenSeq=5",
+      "status": "notified",
+      "recorded_at": "2026-10-30 16:15:48"
+    },
     "id:202500225_1": {
       "id": "202500225_1",
       "key": "id:202500225_1",
@@ -2395,6 +2439,15 @@
       "status": "notified_or_baseline",
       "recorded_at": "2026-05-08 backfill after bulk recovery"
     },
+    "id:202500607_1": {
+      "id": "202500607_1",
+      "key": "id:202500607_1",
+      "title": "㈜글로벌금융판매 제재관련 공시",
+      "date": "2026.10.23",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-10-31&pageIndex=1&examMgmtNo=202500607&emOpenSeq=1",
+      "status": "notified",
+      "recorded_at": "2026-10-30 16:15:49"
+    },
     "id:202500608_1": {
       "id": "202500608_1",
       "key": "id:202500608_1",
@@ -2413,6 +2466,15 @@
       "status": "skipped_by_user",
       "recorded_at": "2026-10-13T08:12:01.006097+00:00"
     },
+    "id:202500610_1": {
+      "id": "202500610_1",
+      "key": "id:202500610_1",
+      "title": "라이나원 제재관련 공시",
+      "date": "2026.10.23",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-10-31&pageIndex=1&examMgmtNo=202500610&emOpenSeq=1",
+      "status": "notified",
+      "recorded_at": "2026-10-30 16:15:49"
+    },
     "id:202500611_1": {
       "id": "202500611_1",
       "key": "id:202500611_1",
@@ -2430,6 +2492,15 @@
       "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-10-13&pageIndex=9&examMgmtNo=202500612&emOpenSeq=1",
       "status": "skipped_by_user",
       "recorded_at": "2026-10-13T08:12:01.006097+00:00"
+    },
+    "id:202500614_1": {
+      "id": "202500614_1",
+      "key": "id:202500614_1",
+      "title": "프라임에셋㈜ 제재관련 공시",
+      "date": "2026.10.23",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-10-31&pageIndex=1&examMgmtNo=202500614&emOpenSeq=1",
+      "status": "notified",
+      "recorded_at": "2026-10-30 16:15:49"
     },
     "id:202500615_1": {
       "id": "202500615_1",
@@ -2944,6 +3015,15 @@
       "status": "notified",
       "recorded_at": "2026-05-18 05:07:26"
     },
+    "id:202600039_1": {
+      "id": "202600039_1",
+      "key": "id:202600039_1",
+      "title": "케이지에이에셋㈜ 제재관련 공시",
+      "date": "2026.10.23",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-10-31&pageIndex=1&examMgmtNo=202600039&emOpenSeq=1",
+      "status": "notified",
+      "recorded_at": "2026-10-30 16:15:49"
+    },
     "id:202600095_1": {
       "id": "202600095_1",
       "key": "id:202600095_1",
@@ -2963,6 +3043,6 @@
       "recorded_at": "2026-10-13T08:12:01.006097+00:00"
     }
   },
-  "latest_notice_date": "2026.10.20",
-  "saved_at": "2026-10-30 07:44:51"
+  "latest_notice_date": "2026.10.27",
+  "saved_at": "2026-10-30 16:15:49"
 }
