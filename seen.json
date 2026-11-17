@@ -56,6 +56,7 @@
     "id:202300746_5",
     "id:202300756_1",
     "id:202300782_1",
+    "id:202300806_1",
     "id:202300807_1",
     "id:202300827_1",
     "id:202300828_1",
@@ -829,6 +830,15 @@
       "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-05-08&pageIndex=4&examMgmtNo=202300782&emOpenSeq=1",
       "status": "notified_or_baseline",
       "recorded_at": "2026-05-08 backfill after bulk recovery"
+    },
+    "id:202300806_1": {
+      "id": "202300806_1",
+      "key": "id:202300806_1",
+      "title": "㈜농심캐피탈 제재관련 공시",
+      "date": "2026.11.16",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-11-17&pageIndex=1&examMgmtNo=202300806&emOpenSeq=1",
+      "status": "notified",
+      "recorded_at": "2026-11-17 14:55:19"
     },
     "id:202300807_1": {
       "id": "202300807_1",
@@ -3243,6 +3253,6 @@
       "recorded_at": "2026-10-13T08:12:01.006097+00:00"
     }
   },
-  "latest_notice_date": "2026.11.09",
-  "saved_at": "2026-11-13 13:27:12"
+  "latest_notice_date": "2026.11.16",
+  "saved_at": "2026-11-17 14:55:19"
 }
