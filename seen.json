@@ -76,6 +76,7 @@
     "id:202400137_1",
     "id:202400144_2",
     "id:202400207_1",
+    "id:202400207_5",
     "id:202400233_2",
     "id:202400272_1",
     "id:202400273_1",
@@ -97,6 +98,7 @@
     "id:202400536_1",
     "id:202400537_1",
     "id:202400545_1",
+    "id:202400547_1",
     "id:202400548_1",
     "id:202400579_1",
     "id:202400599_3",
@@ -104,6 +106,7 @@
     "id:202400603_3",
     "id:202400617_3",
     "id:202400617_6",
+    "id:202400624_1",
     "id:202400638_1",
     "id:202400639_1",
     "id:202400640_1",
@@ -232,10 +235,15 @@
     "id:202500447_1",
     "id:202500447_3",
     "id:202500452_1",
+    "id:202500466_1",
+    "id:202500467_1",
+    "id:202500468_1",
+    "id:202500469_1",
     "id:202500493_1",
     "id:202500503_2",
     "id:202500511_1",
     "id:202500516_1",
+    "id:202500518_1",
     "id:202500520_1",
     "id:202500522_1",
     "id:202500523_1",
@@ -1011,6 +1019,15 @@
       "status": "skipped_by_user",
       "recorded_at": "2026-10-13T08:12:01.006097+00:00"
     },
+    "id:202400207_5": {
+      "id": "202400207_5",
+      "key": "id:202400207_5",
+      "title": "지에이코리아주식회사 제재관련 공시",
+      "date": "2026.11.11",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-11-20&pageIndex=1&examMgmtNo=202400207&emOpenSeq=5",
+      "status": "notified",
+      "recorded_at": "2026-11-20 14:23:51"
+    },
     "id:202400233_2": {
       "id": "202400233_2",
       "key": "id:202400233_2",
@@ -1200,6 +1217,15 @@
       "status": "notified_or_baseline",
       "recorded_at": "2026-05-08 backfill after bulk recovery"
     },
+    "id:202400547_1": {
+      "id": "202400547_1",
+      "key": "id:202400547_1",
+      "title": "삼성화재해상보험주식회사 제재관련 공시",
+      "date": "2026.11.19",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-11-20&pageIndex=1&examMgmtNo=202400547&emOpenSeq=1",
+      "status": "notified",
+      "recorded_at": "2026-11-20 14:23:49"
+    },
     "id:202400548_1": {
       "id": "202400548_1",
       "key": "id:202400548_1",
@@ -1262,6 +1288,15 @@
       "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-10-13&pageIndex=3&examMgmtNo=202400617&emOpenSeq=6",
       "status": "skipped_by_user",
       "recorded_at": "2026-10-13T08:12:01.006097+00:00"
+    },
+    "id:202400624_1": {
+      "id": "202400624_1",
+      "key": "id:202400624_1",
+      "title": "교보증권(주) 제재관련 공시",
+      "date": "2026.11.18",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-11-20&pageIndex=1&examMgmtNo=202400624&emOpenSeq=1",
+      "status": "notified",
+      "recorded_at": "2026-11-20 14:23:50"
     },
     "id:202400638_1": {
       "id": "202400638_1",
@@ -2415,6 +2450,42 @@
       "status": "skipped_by_user",
       "recorded_at": "2026-10-13T08:12:01.006097+00:00"
     },
+    "id:202500466_1": {
+      "id": "202500466_1",
+      "key": "id:202500466_1",
+      "title": "위플러스자산운용 주식회사 제재관련 공시",
+      "date": "2026.11.11",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-11-20&pageIndex=1&examMgmtNo=202500466&emOpenSeq=1",
+      "status": "notified",
+      "recorded_at": "2026-11-20 14:23:50"
+    },
+    "id:202500467_1": {
+      "id": "202500467_1",
+      "key": "id:202500467_1",
+      "title": "애쉬우드파트너스자산운용 주식회사 제재관련 공시",
+      "date": "2026.11.11",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-11-20&pageIndex=1&examMgmtNo=202500467&emOpenSeq=1",
+      "status": "notified",
+      "recorded_at": "2026-11-20 14:23:50"
+    },
+    "id:202500468_1": {
+      "id": "202500468_1",
+      "key": "id:202500468_1",
+      "title": "와이즈먼자산운용 주식회사 제재관련 공시",
+      "date": "2026.11.11",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-11-20&pageIndex=1&examMgmtNo=202500468&emOpenSeq=1",
+      "status": "notified",
+      "recorded_at": "2026-11-20 14:23:50"
+    },
+    "id:202500469_1": {
+      "id": "202500469_1",
+      "key": "id:202500469_1",
+      "title": "디스커버리자산운용 주식회사 제재관련 공시",
+      "date": "2026.11.11",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-11-20&pageIndex=1&examMgmtNo=202500469&emOpenSeq=1",
+      "status": "notified",
+      "recorded_at": "2026-11-20 14:23:50"
+    },
     "id:202500493_1": {
       "id": "202500493_1",
       "key": "id:202500493_1",
@@ -2450,6 +2521,15 @@
       "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-10-13&pageIndex=6&examMgmtNo=202500516&emOpenSeq=1",
       "status": "skipped_by_user",
       "recorded_at": "2026-10-13T08:12:01.006097+00:00"
+    },
+    "id:202500518_1": {
+      "id": "202500518_1",
+      "key": "id:202500518_1",
+      "title": "이아이피자산운용 주식회사 제재관련 공시",
+      "date": "2026.11.11",
+      "url": "https://www.fss.or.kr/fss/job/openInfo/view.do?menuNo=200476&sdate=2026-01-01&edate=2026-11-20&pageIndex=1&examMgmtNo=202500518&emOpenSeq=1",
+      "status": "notified",
+      "recorded_at": "2026-11-20 14:23:50"
     },
     "id:202500520_1": {
       "id": "202500520_1",
@@ -3253,6 +3333,6 @@
       "recorded_at": "2026-10-13T08:12:01.006097+00:00"
     }
   },
-  "latest_notice_date": "2026.11.16",
-  "saved_at": "2026-11-17 14:55:19"
+  "latest_notice_date": "2026.11.19",
+  "saved_at": "2026-11-20 14:23:51"
 }
