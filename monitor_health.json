@@ -1,10 +1,10 @@
 {
-  "last_run_at": "2026-11-23T16:30:05.230691+00:00",
-  "last_collection_success_at": "2026-11-23T16:30:05.230707+00:00",
+  "last_run_at": "2026-11-24T05:32:54.590794+00:00",
+  "last_collection_success_at": "2026-11-24T05:32:54.590812+00:00",
   "outcome": "success",
   "collected": 300,
-  "attempted": 0,
-  "succeeded": 0,
+  "attempted": 2,
+  "succeeded": 2,
   "failed": 0,
-  "last_notification_success_at": "2026-11-20T14:23:51.099538+00:00"
+  "last_notification_success_at": "2026-11-24T05:32:54.929582+00:00"
 }
